@@ -13,13 +13,25 @@ configure do
 end
 
 before do
-  @game ||= session[:game] #if session[:game]
+  @game ||= session[:game]
 end
 
 helpers do
-
   def message(text, style = 'success')
     session[:message] = { text: text, style: style }
+  end
+end
+
+def add_players(params)
+  players = params.values.reject(&:empty?)
+
+  if (3..6).cover?(players.size)
+    players.each { |name| @game.add_player(name) }
+    message("The following players will dive: #{players.join(', ')}")
+    redirect '/'
+  else
+    message('You need 3 to 6 divers', 'danger')
+    erb :new
   end
 end
 
@@ -29,7 +41,7 @@ end
 
 post '/new' do
   session[:game] = Game.new
-  message("Game successfully created!")
+  message('Game successfully created!')
   redirect '/new'
 end
 
@@ -38,8 +50,5 @@ get '/new' do
 end
 
 post '/create' do
-  # @game = Game.new
-  @game.add_player(params[:player1])
-
-  redirect '/'
+  add_players(params)
 end
