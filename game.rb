@@ -7,10 +7,6 @@ class Game
     @winner = nil
   end
 
-  def self.info
-    "I'm a game class"
-  end
-
   def add_player(name)
     @players << Player.new(name)
   end
