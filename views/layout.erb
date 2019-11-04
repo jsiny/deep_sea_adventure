@@ -17,6 +17,13 @@
 
   </head>
   <body>
+    <!-- Flash messages -->
+    <% if session[:message] %>
+      <div class='alert alert-primary'>
+        <%= session.delete(:message) %>
+      </div>
+    <% end %>
+
     <%= yield %>
 
     <!-- JavaScript -->
