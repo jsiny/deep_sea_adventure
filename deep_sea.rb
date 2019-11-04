@@ -39,13 +39,9 @@ get '/' do
   erb :home
 end
 
-post '/new' do
+get '/new' do
   session[:game] = Game.new
   message('Game successfully created!')
-  redirect '/new'
-end
-
-get '/new' do
   erb :new
 end
 
