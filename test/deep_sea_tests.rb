@@ -20,6 +20,10 @@ class DeepSeaTest < Minitest::Test
     last_request.env["rack.session"]
   end
 
+  def game_session
+    { "rack.session" => { game: Game.new } }
+  end
+
   def test_access_homepage
     get '/'
     assert_equal 200, last_response.status
@@ -35,11 +39,33 @@ class DeepSeaTest < Minitest::Test
     assert_includes last_response.body, "<form action='/create' method='post'"
   end
 
-  def test_start_new_game_with_insufficient_players_number
-    post '/create'
+  def test_start_successful_new_game
+    players = { "player1" => "Archer", "player2" => "Lana",
+                "player3" => "Malory", "player4" => "", "player5" => "",
+                "player6" => ""}
+
+    post '/create', players, game_session
+    assert_equal 302, last_response.status
+  end
+
+  def test_start_new_game_with_too_few_players
+    players = { "player1" => "Archer", "player2" => "Lana" }
+
+    post '/create', players, game_session
     assert_equal 200, last_response.status
     assert_includes last_response.body, "3 to 6 divers"
     assert_includes last_response.body, "class='alert alert-danger"
   end
 
+  def test_start_new_game_with_too_many_players
+    players = { "player1" => "Archer", "player2" => "Lana",
+                "player3" => "Malory", "player4" => "Cheryl", 
+                "player5" => "Pam", "player6" => "Dr. Krieger",
+                "player7" => "Cyril" }
+
+    post '/create', players, game_session
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "3 to 6 divers"
+    assert_includes last_response.body, "class='alert alert-danger"
+  end
 end

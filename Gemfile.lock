@@ -15,6 +15,8 @@ GEM
     rack (2.0.7)
     rack-protection (2.0.7)
       rack
+    rack-test (1.1.0)
+      rack (>= 1.0, < 3)
     rainbow (3.0.0)
     rubocop (0.76.0)
       jaro_winkler (~> 1.5.1)
@@ -51,6 +53,7 @@ PLATFORMS
 
 DEPENDENCIES
   erubis
+  rack-test
   rubocop
   rubocop-performance
   simplecov

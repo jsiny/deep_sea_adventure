@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem "erubis"
+gem 'rack-test'
 gem "rubocop"
 gem "rubocop-performance"
 gem 'simplecov', require: false, group: :test
