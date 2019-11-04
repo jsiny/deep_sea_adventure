@@ -2,3 +2,11 @@ body {
   margin-left: 2%;
   margin-top: 1%;
 }
+
+p.lead {
+  font-size: 24px;
+}
+
+.btn {
+  margin-top: 30px;
+}
