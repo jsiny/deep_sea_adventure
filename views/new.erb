@@ -9,11 +9,11 @@
   </ul>
 </p>
 
-<form action='#' method='post' class='players'>
+<form action='/create' method='post' class='players'>
   <div>
     <% 6.times do |n| %>
-      <label for="player-<%= n + 1 %>">Player <%= n + 1 %>: </label>
-      <input name="player-<%= n + 1 %>" placeholder='Jane' type='text'>
+      <label for="player<%= n + 1 %>">Player <%= n + 1 %>: </label>
+      <input name="player<%= n + 1 %>" placeholder='Jane' type='text'>
       <br>
     <% end %>
   </div>

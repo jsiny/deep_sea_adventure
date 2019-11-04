@@ -24,8 +24,9 @@
 
       <!-- Flash messages -->
       <% if session[:message] %>
-        <div class='alert alert-primary col-md-6 offset-3'>
-          <%= session.delete(:message) %>
+        <div class='alert alert-<%= session[:message][:style] %> col-md-6 offset-3'>
+          <%= session[:message][:text] %>
+          <% session.delete(:message) %>
         </div>
       <% end %>
 

@@ -7,8 +7,11 @@ class Game
     @winner = nil
   end
 
-  def to_s
-    "I'm a game object with #{@remaining_rounds} remaining rounds"
+  def self.info
+    "I'm a game class"
   end
 
+  def add_player(name)
+    @players << Player.new(name)
+  end
 end
