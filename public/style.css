@@ -1,10 +1,40 @@
 body {
-  margin-left: 2%;
-  margin-top: 1%;
+  margin: 1% auto;
+  text-align: center;
 }
+
+/* Typography */
 
 p.lead {
   font-size: 24px;
+}
+
+h1.display-4 {
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: 1.2rem;
+}
+
+li.hint {
+  font-size: 1rem;
+  font-style: italic;
+  list-style: none;
+}
+
+/* Forms */
+
+form {
+  margin-top: 1.5rem;
+}
+
+label {
+  margin: 0px 10px 10px;
+}
+
+input {
+  padding: 3px;
 }
 
 .btn {

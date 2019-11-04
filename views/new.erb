@@ -1,0 +1,22 @@
+<% content_for :title do %>
+  Set Up New Game
+<% end %>
+
+<p>Please type in the player's names (3 - 6 players):
+  <ul>
+<li class='hint'>Add the players in order</li>
+<li class='hint'>If you're less than 6, leave empty the remaining players</li>
+  </ul>
+</p>
+
+<form action='#' method='post' class='players'>
+  <div>
+    <% 6.times do |n| %>
+      <label for="player-<%= n + 1 %>">Player <%= n + 1 %>: </label>
+      <input name="player-<%= n + 1 %>" placeholder='Jane' type='text'>
+      <br>
+    <% end %>
+  </div>
+
+  <button type='submit' class='btn btn-outline-primary'>Start game</button>
+</form>

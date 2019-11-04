@@ -14,17 +14,24 @@
     <link rel='stylesheet' href='/style.css' type='text/css'>
 
     <title>Deep Sea Adventure | Scoring App</title>
-
   </head>
   <body>
-    <!-- Flash messages -->
-    <% if session[:message] %>
-      <div class='alert alert-primary'>
-        <%= session.delete(:message) %>
-      </div>
-    <% end %>
+    <div class='container'>
+      <!-- Page title -->
+      <h1 class="display-4">
+        <%= yield_content :title %>
+      </h1>
 
-    <%= yield %>
+      <!-- Flash messages -->
+      <% if session[:message] %>
+        <div class='alert alert-primary col-md-6 offset-3'>
+          <%= session.delete(:message) %>
+        </div>
+      <% end %>
+
+      <!-- Page Content -->
+      <%= yield %>
+    </div>
 
     <!-- JavaScript -->
     <!-- JQuery, Popper.js then Bootstrap JS -->
@@ -44,6 +51,5 @@
       crossorigin="anonymous">
     </script>
     -->
-
-  </body>
+    </body>
 </html>

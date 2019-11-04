@@ -1,12 +1,13 @@
 <div class='text-center'>
-  <h1 class='game display-4'>🤿 Deep Sea Adventure 🐠</h1>
   <p class='lead'>Scoring App</p>
-</div>
 
-<div class='text-center'>
-  <form action='/new' method='get'>
+  <form action='/new' method='post'>
     <button type="submit" class="btn btn-outline-primary">
       Start New Game
     </button>
   </form>
 </div>
+
+<% content_for :title do %>
+  🤿 Deep Sea Adventure 🐠
+<% end %>

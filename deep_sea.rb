@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
+require 'sinatra/content_for'
 require 'tilt/erubis'
 require 'securerandom'
 
@@ -14,8 +15,12 @@ get '/' do
   erb :home
 end
 
-get '/new' do
+post '/new' do
   session[:game] = Game.new
   session[:message] = "Game successfully created!"
+  redirect :new
+end
+
+get '/new' do
   erb :new
 end
