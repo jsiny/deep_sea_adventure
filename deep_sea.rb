@@ -53,12 +53,14 @@ post '/create' do
 end
 
 get '/round/:round_id/player/:player_id' do
-  round_id = params[:round_id].to_i
+  round_id = params[:round_id].to_i # Use?
   player_id = params[:player_id].to_i
 
   @round = @game.round
   @player = @game.players[player_id]
-  @round.remaining_oxygen = 17
+
+  # @round.remaining_oxygen = 17
   # @player.going_up=(true)
+  
   erb :round
 end

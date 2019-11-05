@@ -76,7 +76,7 @@ class DeepSeaTest < Minitest::Test
     assert_includes last_response.body, "class='alert alert-danger"
   end
 
-  def test_access_round_page
+  def test_access_first_round_page
     post '/create', players, game_session
     get '/round/1/player/0'
     
@@ -84,5 +84,8 @@ class DeepSeaTest < Minitest::Test
     assert_includes last_response.body, '<div class="progress"'
     assert_includes last_response.body, '<input type="radio" name="diving"'
     assert_includes last_response.body, '<input type="radio" name="treasure"'
+    assert_includes last_response.body, 
+                    "There are <strong>25</strong> slots of oxygen left"
+    assert_includes last_response.body, 'aria-valuenow=0'
   end
 end
