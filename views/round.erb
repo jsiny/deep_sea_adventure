@@ -4,29 +4,10 @@
 
 <form id="player_actions" action='#' method='post'>
   <legend>What will Jane do?</legend>
-  <div class="btn-group btn-group-toggle" data-toggle="buttons">
-    <label class="btn btn-outline-primary">
-      <input type="radio" name="diving" id="false">Go back up 👍
-    </label>
-    <label class="btn btn-outline-primary active">
-      <input type="radio" checked name="diving" id="true">Keep diving 👎
-    </label>
-  </div>
-  
+  <%== erb :form_diving %>
   <br>
 
-  <div class="btn-group btn-group-toggle" data-toggle="buttons">
-    <label class="btn btn-outline-primary">
-      <input type="radio" name="treasure" id="add">Take the treasure
-    </label>
-    <label class="btn btn-outline-primary">
-      <input type="radio" name="treasure" id="remove">Leave a treasure
-    </label>
-    <label class="btn btn-outline-primary">
-      <input type="radio" name="treasure" id="none">Do nothing
-    </label>
-  </div>
-
+  <%== erb :form_treasure %>
   <br>
 
   <button type='submit' class="btn btn-outline-success">Submit</button>
