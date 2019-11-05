@@ -9,7 +9,7 @@ class Player
   end
 
   def reset
-    @treasures = 2
+    @treasures = 0
     @going_up  = false
     @is_back   = false
   end
