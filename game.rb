@@ -1,6 +1,8 @@
 class Game
   ROUNDS_NUMBER = 3
 
+  attr_accessor :players
+
   def initialize
     @players = []
     @remaining_rounds = ROUNDS_NUMBER
@@ -8,6 +10,10 @@ class Game
   end
 
   def add_player(name)
-    @players << Player.new(name)
+    players << Player.new(name)
+  end
+
+  def start
+    @round = Round.new(players, 0)
   end
 end

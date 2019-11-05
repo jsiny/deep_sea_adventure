@@ -8,4 +8,8 @@ class Player
     @going_up  = false
     @is_back   = false
   end
+
+  def to_s
+    @name
+  end
 end
