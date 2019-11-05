@@ -49,3 +49,7 @@ end
 post '/create' do
   add_players(params)
 end
+
+get '/oxygen' do
+  erb :oxygen
+end

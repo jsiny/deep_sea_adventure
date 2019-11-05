@@ -40,3 +40,18 @@ input {
 .btn {
   margin-top: 30px;
 }
+
+/* Progress bar */
+
+.progress-bar {
+  color: black;
+}
+
+.progress {
+  margin-top: 20px;
+  margin-bottom: 10px;  
+}
+
+hr {
+  margin: 30px 0px;
+}
