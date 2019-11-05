@@ -18,4 +18,8 @@ class Round
   def percentage_oxygen
     (( consumed_oxygen.to_f / MAX_OXYGEN ) * 100).to_i
   end
+
+  def reduce_oxygen(player)
+    self.remaining_oxygen -= player.treasures
+  end
 end

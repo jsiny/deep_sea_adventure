@@ -18,6 +18,13 @@ before do
   @game ||= session[:game]
 end
 
+before '/round/:round_id/player/:player_id' do
+  @round_id = params[:round_id].to_i
+  @player_id = params[:player_id].to_i
+  @round = @game.round
+  @player = @game.players[@player_id]
+end
+
 helpers do
   def message(text, style = 'success')
     session[:message] = { text: text, style: style }
@@ -38,29 +45,37 @@ def add_players(params)
   end
 end
 
+# Homepage
 get '/' do
   erb :home
 end
 
+# Enter players' name
 get '/new' do
   session[:game] = Game.new
   message('Game successfully created!')
   erb :new
 end
 
+# Create new game
 post '/create' do
   add_players(params)
 end
 
+# One player plays
 get '/round/:round_id/player/:player_id' do
-  round_id = params[:round_id].to_i # Use?
-  player_id = params[:player_id].to_i
-
-  @round = @game.round
-  @player = @game.players[player_id]
-
-  # @round.remaining_oxygen = 17
-  # @player.going_up=(true)
-  
+  @round.reduce_oxygen(@player)
   erb :round
+end
+
+post '/round/:round_id/player/:player_id' do
+  keep_diving = params[:dive]   # true / false (str)
+  back = params[:back]          # true / false (str)
+  treasure = params[:treasure]  # add, remove, none
+
+  @player.save_info(keep_diving, back, treasure)
+
+  # method for next player
+  redirect "/round/#{@round_id}/player/#{@player_id + 1}"
+  # require 'pry'; binding.pry
 end

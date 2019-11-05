@@ -2,7 +2,7 @@
   It's <%= @player %>'s turn!
 <% end %>
 
-<form id="player_actions" action='#' method='post'>
+<form id="player_actions" action='/round/<%= @round_id %>/player/<%= @player_id %>' method='post'>
    
   <% if @player.going_up %>
     <%== erb :form_surface %>
