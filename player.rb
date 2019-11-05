@@ -1,6 +1,6 @@
 class Player
   attr_accessor :going_up
-  attr_reader   :treasures
+  attr_reader   :treasures, :is_back
 
   def initialize(name)
     @name  = name
@@ -20,7 +20,7 @@ class Player
 
   def save_info(keep_diving, back, treasure)
     @going_up = true if keep_diving == 'false'
-    @is_back  = true if back        == 'false'
+    @is_back  = true if back        == 'true'
     save_treasure(treasure)
   end
 

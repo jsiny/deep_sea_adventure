@@ -19,10 +19,11 @@ before do
 end
 
 before '/round/:round_id/player/:player_id' do
-  @round_id = params[:round_id].to_i
+  @round_id  = params[:round_id].to_i
   @player_id = params[:player_id].to_i
-  @round = @game.round
-  @player = @game.players[@player_id]
+  @round     = @game.round
+  @player    = @game.players[@player_id]
+  @players   = @game.players
 end
 
 helpers do
@@ -43,6 +44,28 @@ def add_players(params)
     message('You need 3 to 6 divers', 'danger')
     erb :new
   end
+end
+
+def next_player_id
+  # id = @player_id
+
+  # loop do
+  #   id = ( ( id + 1 ) % @players.size )
+  #   require 'pry'; binding.pry
+  #   break id unless @game.players[id].is_back
+  # end
+
+  # players = @players.reject(&:is_back)
+
+  id = @player_id
+
+  loop do
+    id += 1
+    id %= 3
+    next if @players[id].is_back
+    break id
+  end
+
 end
 
 # Homepage
@@ -75,7 +98,7 @@ post '/round/:round_id/player/:player_id' do
 
   @player.save_info(keep_diving, back, treasure)
 
-  # method for next player
-  redirect "/round/#{@round_id}/player/#{@player_id + 1}"
-  # require 'pry'; binding.pry
+  id = next_player_id
+  require 'pry'; binding.pry
+  redirect "/round/#{@round_id}/player/#{id}"
 end
