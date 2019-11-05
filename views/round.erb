@@ -3,8 +3,15 @@
 <% end %>
 
 <form id="player_actions" action='#' method='post'>
-  <legend>What will Jane do?</legend>
-  <%== erb :form_diving %>
+   
+  <% if @player.going_up %>
+    <%== erb :form_surface %>
+  <% else %>
+    <%== erb :form_diving %>Z
+  <% end %>
+
+  <br>
+  <br>
   <br>
 
   <%== erb :form_treasure %>

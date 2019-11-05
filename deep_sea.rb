@@ -55,5 +55,7 @@ get '/oxygen' do
 end
 
 get '/round' do
+  @player = Player.new("test")
+  # @player.going_up=(true)
   erb :round
 end
