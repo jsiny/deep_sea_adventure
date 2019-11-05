@@ -24,6 +24,11 @@ class DeepSeaTest < Minitest::Test
     { "rack.session" => { game: Game.new } }
   end
 
+  def players
+    { "player1" => "archer", "player2" => "Lana", "player3" => "Malory",
+      "player4" => "", "player5" => "", "player6" => "" }
+  end
+
   def test_access_homepage
     get '/'
     assert_equal 200, last_response.status
@@ -40,12 +45,14 @@ class DeepSeaTest < Minitest::Test
   end
 
   def test_start_successful_new_game
-    players = { "player1" => "Archer", "player2" => "Lana",
-                "player3" => "Malory", "player4" => "", "player5" => "",
-                "player6" => ""}
-
     post '/create', players, game_session
     assert_equal 302, last_response.status
+    assert_equal "The following players will dive: Archer, Lana, Malory",
+                  session[:message][:text]
+
+    get last_response.headers['Location']
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "It's Archer's turn"
   end
 
   def test_start_new_game_with_too_few_players
@@ -67,5 +74,15 @@ class DeepSeaTest < Minitest::Test
     assert_equal 200, last_response.status
     assert_includes last_response.body, "3 to 6 divers"
     assert_includes last_response.body, "class='alert alert-danger"
+  end
+
+  def test_access_round_page
+    post '/create', players, game_session
+    get '/round/1/player/0'
+    
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, '<div class="progress"'
+    assert_includes last_response.body, '<input type="radio" name="diving"'
+    assert_includes last_response.body, '<input type="radio" name="treasure"'
   end
 end
