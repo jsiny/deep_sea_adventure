@@ -6,6 +6,7 @@ require 'securerandom'
 
 require_relative 'game'
 require_relative 'player'
+require_relative 'round'
 
 configure do
   enable :sessions
