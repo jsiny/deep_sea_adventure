@@ -1,0 +1,36 @@
+<% content_for :title do %>
+  It's Jane's turn!
+<% end %>
+
+<form id="player_actions" action='#' method='post'>
+  <legend>What will Jane do?</legend>
+  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+    <label class="btn btn-outline-primary">
+      <input type="radio" name="diving" id="false">Go back up 👍
+    </label>
+    <label class="btn btn-outline-primary active">
+      <input type="radio" checked name="diving" id="true">Keep diving 👎
+    </label>
+  </div>
+  
+  <br>
+
+  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+    <label class="btn btn-outline-primary">
+      <input type="radio" name="treasure" id="add">Take the treasure
+    </label>
+    <label class="btn btn-outline-primary">
+      <input type="radio" name="treasure" id="remove">Leave a treasure
+    </label>
+    <label class="btn btn-outline-primary">
+      <input type="radio" name="treasure" id="none">Do nothing
+    </label>
+  </div>
+
+  <br>
+
+  <button type='submit' class="btn btn-outline-success">Submit</button>
+</form>
+
+<%== erb :oxygen %>
+

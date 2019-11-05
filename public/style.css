@@ -29,7 +29,7 @@ form {
   margin-top: 1.5rem;
 }
 
-label {
+.players label {
   margin: 0px 10px 10px;
 }
 
@@ -39,6 +39,10 @@ input {
 
 .btn {
   margin-top: 30px;
+}
+
+legend {
+  margin-bottom: 0;
 }
 
 /* Progress bar */

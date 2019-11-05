@@ -53,3 +53,7 @@ end
 get '/oxygen' do
   erb :oxygen
 end
+
+get '/round' do
+  erb :round
+end
