@@ -50,10 +50,6 @@ post '/create' do
   add_players(params)
 end
 
-get '/oxygen' do
-  erb :oxygen
-end
-
 get '/round' do
   @player = Player.new("test")
   # @player.going_up=(true)
