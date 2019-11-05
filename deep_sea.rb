@@ -46,28 +46,6 @@ def add_players(params)
   end
 end
 
-def next_player_id
-  # id = @player_id
-
-  # loop do
-  #   id = ( ( id + 1 ) % @players.size )
-  #   require 'pry'; binding.pry
-  #   break id unless @game.players[id].is_back
-  # end
-
-  # players = @players.reject(&:is_back)
-
-  id = @player_id
-
-  loop do
-    id += 1
-    id %= 3
-    next if @players[id].is_back
-    break id
-  end
-
-end
-
 # Homepage
 get '/' do
   erb :home
@@ -96,9 +74,11 @@ post '/round/:round_id/player/:player_id' do
   back = params[:back]          # true / false (str)
   treasure = params[:treasure]  # add, remove, none
 
-  @player.save_info(keep_diving, back, treasure)
+  # What happens when form is incomplete?
+  # Add tests
 
-  id = next_player_id
-  require 'pry'; binding.pry
-  redirect "/round/#{@round_id}/player/#{id}"
+  @player.save_info(keep_diving, back, treasure)
+  next_player = @round.next_id(@player_id)
+
+  redirect "/round/#{@round_id}/player/#{next_player}"
 end

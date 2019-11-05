@@ -22,4 +22,16 @@ class Round
   def reduce_oxygen(player)
     self.remaining_oxygen -= player.treasures
   end
+
+  def next_id(current_player_id)
+    id = current_player_id
+  
+    loop do
+      id += 1
+      id %= 3
+      next if @players[id].is_back
+      break id
+    end
+  end
+  
 end
