@@ -35,8 +35,7 @@ class DeepSeaTest < Minitest::Test
   end
 
   def test_start_successful_new_game
-    get '/new'
-    post '/create', players
+    create_game(players)
     assert_equal 302, last_response.status
     assert_equal "The following players will dive: Archer, Lana, Malory",
                   session[:message][:text]
@@ -48,9 +47,7 @@ class DeepSeaTest < Minitest::Test
 
   def test_start_new_game_with_too_few_players
     players = { "player1" => "Archer", "player2" => "Lana" }
-
-    get '/new'
-    post '/create', players
+    create_game(players)
     assert_equal 200, last_response.status
     assert_includes last_response.body, "3 to 6 divers"
     assert_includes last_response.body, "class='alert alert-danger"
@@ -62,15 +59,14 @@ class DeepSeaTest < Minitest::Test
                 "player5" => "Pam", "player6" => "Dr. Krieger",
                 "player7" => "Cyril" }
 
-    post '/create', players
+    create_game(players)
     assert_equal 200, last_response.status
     assert_includes last_response.body, "3 to 6 divers"
     assert_includes last_response.body, "class='alert alert-danger"
   end
 
   def test_access_first_round_page
-    get '/new'
-    post '/create', players
+    create_game(players)
     assert_equal 302, last_response.status
 
     get last_response.headers['Location']
@@ -85,10 +81,8 @@ class DeepSeaTest < Minitest::Test
   end
 
   def test_send_first_player_turn
-    get '/new'
-    post '/create', players
+    create_game(players)
     post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'add' }
-
     assert_equal 302, last_response.status
 
     get last_response.headers['Location']
