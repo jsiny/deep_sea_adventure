@@ -15,15 +15,15 @@ configure do
 end
 
 before do
-  @game ||= session[:game]
+  # @game = session[:game]
 end
 
 before '/round/:round_id/player/:player_id' do
   @round_id  = params[:round_id].to_i
   @player_id = params[:player_id].to_i
-  @round     = @game.round
-  @player    = @game.players[@player_id]
-  @players   = @game.players
+  @round     = session[:game].round
+  @player    = session[:game].players[@player_id]
+  @players   = session[:game].players
 end
 
 helpers do
@@ -36,9 +36,10 @@ def add_players(params)
   players = params.values.reject(&:empty?).map(&:capitalize)
 
   if (3..6).cover?(players.size)
-    players.each { |name| @game.add_player(name) }
+    # players.each { |name| @game.add_player(name) }
+    players.each { |name| session[:game].add_player(name) }
     message("The following players will dive: #{players.join(', ')}")
-    @game.start
+    session[:game].start
     redirect '/round/1/player/0'
   else
     message('You need 3 to 6 divers', 'danger')

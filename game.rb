@@ -10,7 +10,7 @@ class Game
   end
 
   def add_player(name)
-    @players << Player.new(name)
+    self.players << Player.new(name)
   end
 
   def start
