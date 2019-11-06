@@ -34,6 +34,19 @@
 
       <!-- Page Content -->
       <%== yield %>
+
+      <!-- Session Debug info -->
+      <% if session[:game] %>
+        <br>
+        <br>
+        <div class="card">
+          <h5 class="card-header">Debug</h5>
+          <div class="card-body">
+            <p class="card-text"><%= session[:game].inspect %></p>
+          </div>
+        </div>
+      <% end %>
+
     </div>
 
     <!-- JavaScript -->
