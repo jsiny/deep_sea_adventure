@@ -83,12 +83,51 @@ class DeepSeaTest < Minitest::Test
   def test_send_first_player_turn
     create_game(players)
     post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'add' }
-    assert_equal 302, last_response.status
+    assert_equal 302,   last_response.status
+    assert_equal 1,     game.players[0].treasures
+    assert_equal false, game.players[0].going_up
 
     get last_response.headers['Location']
     assert_equal 200, last_response.status
     assert_includes last_response.body, "It's Lana's turn"
   end
+
+  def test_player_takes_no_treasure
+    create_game(players)
+    puts game
+
+    post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'none' }
+    assert_equal 302,   last_response.status
+    assert_equal 0,     game.players[1].treasures
+    assert_equal false, game.players[1].going_up
+
+    puts game
+  end
+
+  # def test_player_leaves_treasure_and_goes_up
+  #   create_game(players)
+    
+  #   post '/round/1/player/2', { 'keep_diving' => 'true', 'treasure' => 'add' }
+  #   assert_equal 302,   last_response.status
+  #   assert_equal 1,     game.players[2].treasures
+  #   assert_equal false, game.players[2].going_up
+
+  #   puts game
+
+  #   post '/round/1/player/2', { 'keep_diving' => 'false', 'treasure' => 'remove' }
+  #   assert_equal 302,   last_response.status
+  #   assert_equal 0,     game.players[2].treasures
+  #   # assert_equal true,  game.players[2].going_up
+  #   puts game
+
+  #   # binding.pry
+
+  #   post '/round/1/player/2', { 'back' => 'false', 'treasure' => 'add' }
+  #   assert_equal 302,   last_response.status
+  #   assert_equal 1,     game.players[2].treasures
+  #   assert_equal true,  game.players[2].going_up
+  #   assert_equal false, game.players[2].is_back
+  # end
 
   # keep_diving = params[:dive]   # true / false (str)
   # back = params[:back]          # true / false (str)
