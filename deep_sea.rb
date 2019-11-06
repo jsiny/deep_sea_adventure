@@ -9,7 +9,7 @@ require_relative 'player'
 require_relative 'round'
 
 configure do
-  enable :sessions
+  enable :sessions #unless test?
   set :session_secret, ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
   set :erb, :escape_html => true
 end

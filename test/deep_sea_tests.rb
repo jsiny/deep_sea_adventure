@@ -8,25 +8,15 @@ Minitest::Reporters.use!
 require 'rack/test'
 
 require_relative '../deep_sea.rb'
+require_relative 'test_helper.rb'
+
+require 'pry'
 
 class DeepSeaTest < Minitest::Test
   include Rack::Test::Methods
 
   def app
     Sinatra::Application
-  end
-
-  def session
-    last_request.env["rack.session"]
-  end
-
-  def game_session
-    { "rack.session" => { game: Game.new } }
-  end
-
-  def players
-    { "player1" => "archer", "player2" => "Lana", "player3" => "Malory",
-      "player4" => "", "player5" => "", "player6" => "" }
   end
 
   def test_access_homepage
@@ -45,7 +35,8 @@ class DeepSeaTest < Minitest::Test
   end
 
   def test_start_successful_new_game
-    post '/create', players, game_session
+    get '/new'
+    post '/create', players
     assert_equal 302, last_response.status
     assert_equal "The following players will dive: Archer, Lana, Malory",
                   session[:message][:text]
@@ -58,7 +49,8 @@ class DeepSeaTest < Minitest::Test
   def test_start_new_game_with_too_few_players
     players = { "player1" => "Archer", "player2" => "Lana" }
 
-    post '/create', players, game_session
+    get '/new'
+    post '/create', players
     assert_equal 200, last_response.status
     assert_includes last_response.body, "3 to 6 divers"
     assert_includes last_response.body, "class='alert alert-danger"
@@ -70,22 +62,41 @@ class DeepSeaTest < Minitest::Test
                 "player5" => "Pam", "player6" => "Dr. Krieger",
                 "player7" => "Cyril" }
 
-    post '/create', players, game_session
+    post '/create', players
     assert_equal 200, last_response.status
     assert_includes last_response.body, "3 to 6 divers"
     assert_includes last_response.body, "class='alert alert-danger"
   end
 
   def test_access_first_round_page
-    post '/create', players, game_session
-    get '/round/1/player/0'
+    get '/new'
+    post '/create', players
+    assert_equal 302, last_response.status
+
+    get last_response.headers['Location']
     
     assert_equal 200, last_response.status
     assert_includes last_response.body, '<div class="progress"'
-    assert_includes last_response.body, '<input type="radio" name="diving"'
+    assert_includes last_response.body, '<input type="radio" name="dive"'
     assert_includes last_response.body, '<input type="radio" name="treasure"'
     assert_includes last_response.body, 
                     "There are <strong>25</strong> slots of oxygen left"
     assert_includes last_response.body, 'aria-valuenow=0'
   end
+
+  def test_send_first_player_turn
+    get '/new'
+    post '/create', players
+    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'add' }
+
+    assert_equal 302, last_response.status
+
+    get last_response.headers['Location']
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "It's Lana's turn"
+  end
+
+  # keep_diving = params[:dive]   # true / false (str)
+  # back = params[:back]          # true / false (str)
+  # treasure = params[:treasure]  # add, remove, none
 end
