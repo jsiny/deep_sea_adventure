@@ -30,7 +30,11 @@ class Player
     case treasure
     when 'none'   then return
     when 'add'    then @treasures += 1
-    when 'remove' then @treasures -= 1
+    when 'remove' then remove_treasure
     end
+  end
+
+  def remove_treasure
+    @treasures -= 1 unless @treasures.zero?
   end
 end

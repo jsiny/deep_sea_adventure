@@ -46,6 +46,14 @@ def add_players(params)
   end
 end
 
+def reduce_oxygen(player)
+  treasures = player.treasures
+
+  if @round.reduce_oxygen?(treasures)
+    message("#{player} has reduced the oxygen by #{treasures}", 'warning')
+  end
+end
+
 # Homepage
 get '/' do
   erb :home
@@ -65,7 +73,7 @@ end
 
 # One player plays
 get '/round/:round_id/player/:player_id' do
-  @round.reduce_oxygen(@player)
+  reduce_oxygen(@player)
   erb :round
 end
 

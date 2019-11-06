@@ -19,8 +19,8 @@ class Round
     (( consumed_oxygen.to_f / MAX_OXYGEN ) * 100).to_i
   end
 
-  def reduce_oxygen(player)
-    self.remaining_oxygen -= player.treasures
+  def reduce_oxygen?(treasures)
+    self.remaining_oxygen -= treasures unless treasures.zero?
   end
 
   def next_id(current_player_id)
