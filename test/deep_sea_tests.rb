@@ -139,7 +139,18 @@ class DeepSeaTest < Minitest::Test
     create_game(players)
 
     post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'add' }
-    assert_equal '/round/1/player/2', last_response.headers['Location']
+    assert_includes last_response.headers['Location'], '/round/1/player/2'
+
+    get last_response.headers['Location']
+    assert 200, last_response.status
+    assert_includes last_response.body, "It's Malory's turn!"
+
+    post '/round/1/player/2', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    assert_includes last_response.headers['Location'], '/round/1/player/0'
+
+    get last_response.headers['Location']
+    assert 200, last_response.status
+    assert_includes last_response.body, "It's Archer's turn!"
   end
 
   # keep_diving = params[:dive]   # true / false (str)
