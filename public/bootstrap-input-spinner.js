@@ -27,7 +27,7 @@
           decrementButton: "<strong>-</strong>", // button text
           incrementButton: "<strong>+</strong>", // ..
           groupClass: "", // css class of the resulting input-group
-          buttonsClass: "btn-outline-secondary",
+          buttonsClass: "btn-primary",
           buttonsWidth: "2.5rem",
           textAlign: "center",
           autoDelay: 500, // ms holding before auto value change
