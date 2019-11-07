@@ -156,26 +156,26 @@ class DeepSeaTest < Minitest::Test
   def test_redirection_when_player_back
     create_game(players)
 
-    post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    post '/round/1/player/1', { 'keep_diving' => 'true',  'treasure' => 'add' }
     post '/round/1/player/1', { 'keep_diving' => 'false', 'treasure' => 'add' }
-    post '/round/1/player/1', { 'back' => 'true', 'treasure' => 'none' }
+    post '/round/1/player/1', { 'back'        => 'true',  'treasure' => 'none' }
 
-    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    post '/round/1/player/0', { 'keep_diving' => 'true',  'treasure' => 'add' }
     assert_includes last_response.headers['Location'], '/round/1/player/2'
   end
 
   def test_redirection_when_only_player_left
     create_game(players)
 
-    post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    post '/round/1/player/1', { 'keep_diving' => 'true',  'treasure' => 'add' }
     post '/round/1/player/1', { 'keep_diving' => 'false', 'treasure' => 'add' }
-    post '/round/1/player/1', { 'back' => 'true', 'treasure' => 'none' }
+    post '/round/1/player/1', { 'back'        => 'true',  'treasure' => 'none' }
 
-    post '/round/1/player/2', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    post '/round/1/player/2', { 'keep_diving' => 'true',  'treasure' => 'add' }
     post '/round/1/player/2', { 'keep_diving' => 'false', 'treasure' => 'add' }
-    post '/round/1/player/2', { 'back' => 'true', 'treasure' => 'none' }
+    post '/round/1/player/2', { 'back'        => 'true',  'treasure' => 'none' }
 
-    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    post '/round/1/player/0', { 'keep_diving' => 'true',  'treasure' => 'add' }
     assert_includes last_response.headers['Location'], '/round/1/player/0'
   end
 
