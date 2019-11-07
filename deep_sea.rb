@@ -48,6 +48,10 @@ def reduce_oxygen(player)
   message(alert, 'warning') if @round.reduce_oxygen?(treasures)
 end
 
+# def find_player(id)
+  
+# end
+
 # Homepage
 get '/' do
   erb :home
@@ -67,7 +71,6 @@ end
 
 # One player plays
 get '/round/:round_id/player/:player_id' do
-  reduce_oxygen(@player)
   erb :round
 end
 
@@ -80,5 +83,6 @@ post '/round/:round_id/player/:player_id' do
   redirect '/round/1/score' if @round.over?
 
   next_player = @round.next_id(@player_id)
+  reduce_oxygen(@players[next_player])
   redirect "/round/#{@round_id}/player/#{next_player}"
 end

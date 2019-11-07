@@ -210,11 +210,12 @@ class DeepSeaTest < Minitest::Test
     get '/round/1/player/2'
     refute_includes last_response.body, "Lana has reduced the oxygen by 1"
 
+    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'none' }
     get '/round/1/player/1'
     assert_includes last_response.body, "Lana has reduced the oxygen by 1"
 
     post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'remove' }
-
+    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'none' }
     get '/round/1/player/1'
     refute_includes last_response.body, "Lana has reduced the oxygen by 1"
   end
@@ -238,13 +239,14 @@ class DeepSeaTest < Minitest::Test
       post '/round/1/player/0', { 'keep_diving' => 'true',  'treasure' => 'add' }
     end
 
-    5.times do
-      get '/round/1/player/0'
+    6.times do
+      post '/round/1/player/2', { 'keep_diving' => 'true',  'treasure' => 'none' }
     end
 
     get '/round/1/player/0'
     assert_includes last_response.body, "1</strong> slots of oxygen left"
 
+    post '/round/1/player/2', { 'keep_diving' => 'true',  'treasure' => 'none' }
     get '/round/1/player/0'
     assert_includes last_response.body, "0</strong> slots of oxygen left"
 
