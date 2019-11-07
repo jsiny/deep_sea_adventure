@@ -3,8 +3,6 @@ require 'sinatra/reloader' if development?
 require 'sinatra/content_for'
 require 'tilt/erubis'
 require 'securerandom'
-require 'psych'
-require 'pry'
 
 require_relative 'game'
 require_relative 'player'
@@ -14,10 +12,6 @@ configure do
   enable :sessions
   set :session_secret, ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
   set :erb, :escape_html => true
-end
-
-before do
-  # @game = session[:game]
 end
 
 before '/round/:round_id/player/:player_id' do
@@ -83,9 +77,6 @@ post '/round/:round_id/player/:player_id' do
   keep_diving = params[:dive]     # true / false (str)
   back        = params[:back]     # true / false (str)
   treasure    = params[:treasure] # add, remove, none
-
-  # What happens when form is incomplete?
-  # Add tests
 
   @player.save_info(keep_diving, back, treasure)
   next_player = @round.next_id(@player_id)
