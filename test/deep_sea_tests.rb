@@ -101,30 +101,46 @@ class DeepSeaTest < Minitest::Test
     assert_equal false, game.players[1].going_up
   end
 
-  # def test_player_leaves_treasure_and_goes_up
-  #   create_game(players)
-    
-  #   post '/round/1/player/2', { 'keep_diving' => 'true', 'treasure' => 'add' }
-  #   assert_equal 302,   last_response.status
-  #   assert_equal 1,     game.players[2].treasures
-  #   assert_equal false, game.players[2].going_up
+  def test_player_takes_and_leaves_treasures
+    create_game(players)
 
-  #   puts game
+    post '/round/1/player/2', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    assert_equal 302,   last_response.status
+    assert_equal 1,     game.players[2].treasures
+    assert_equal false, game.players[2].going_up
 
-  #   post '/round/1/player/2', { 'keep_diving' => 'false', 'treasure' => 'remove' }
-  #   assert_equal 302,   last_response.status
-  #   assert_equal 0,     game.players[2].treasures
-  #   # assert_equal true,  game.players[2].going_up
-  #   puts game
+    post '/round/1/player/2', { 'keep_diving' => 'false', 'treasure' => 'add' }
+    assert_equal 302,   last_response.status
+    assert_equal 2,     game.players[2].treasures
 
-  #   # binding.pry
+    post '/round/1/player/2', { 'back' => 'false', 'treasure' => 'remove' }
+    assert_equal 302,   last_response.status
+    assert_equal 1,     game.players[2].treasures
+    assert_equal false, game.players[2].is_back
 
-  #   post '/round/1/player/2', { 'back' => 'false', 'treasure' => 'add' }
-  #   assert_equal 302,   last_response.status
-  #   assert_equal 1,     game.players[2].treasures
-  #   assert_equal true,  game.players[2].going_up
-  #   assert_equal false, game.players[2].is_back
-  # end
+    post '/round/1/player/2', { 'back' => 'true', 'treasure' => 'none' }
+    assert_equal 302,   last_response.status
+    assert_equal 1,     game.players[2].treasures
+    assert_equal true,  game.players[2].is_back
+  end
+
+  def test_player_treasure_persists
+    create_game(players)
+
+    post '/round/1/player/2', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    assert_equal 1,     game.players[2].treasures
+
+    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'none' }
+    assert_equal 1,     game.players[2].treasures
+    assert_equal 0,     game.players[0].treasures
+  end
+
+  def test_correct_redirection_player_turn
+    create_game(players)
+
+    post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    assert_equal '/round/1/player/2', last_response.headers['Location']
+  end
 
   # keep_diving = params[:dive]   # true / false (str)
   # back = params[:back]          # true / false (str)

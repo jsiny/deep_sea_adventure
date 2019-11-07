@@ -88,8 +88,6 @@ post '/round/:round_id/player/:player_id' do
   # Add tests
 
   @player.save_info(keep_diving, back, treasure)
-  # require 'pry'; binding.pry
-
   next_player = @round.next_id(@player_id)
 
   redirect "/round/#{@round_id}/player/#{next_player}"
