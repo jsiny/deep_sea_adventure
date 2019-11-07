@@ -65,6 +65,29 @@ class DeepSeaTest < Minitest::Test
     assert_includes last_response.body, "class='alert alert-danger"
   end
 
+  def test_game_with_six_players
+    players = { "player1" => "Archer", "player2" => "Lana",
+                "player3" => "Malory", "player4" => "Cheryl", 
+                "player5" => "Pam", "player6" => "Krieger" }
+
+    create_game(players)
+    post '/round/1/player/2', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    assert_includes last_response.headers['Location'], '/round/1/player/3'
+
+    post '/round/1/player/3', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    assert_includes last_response.headers['Location'], '/round/1/player/4'
+
+    post '/round/1/player/4', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    assert_includes last_response.headers['Location'], '/round/1/player/5'
+
+    post '/round/1/player/5', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    assert_includes last_response.headers['Location'], '/round/1/player/0'
+
+    players.values.each do |name|
+      assert_includes game.players.join("\n"), name
+    end
+  end
+
   def test_access_first_round_page
     create_game(players)
     assert_equal 302, last_response.status
