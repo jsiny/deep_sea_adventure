@@ -28,7 +28,7 @@ class Round
 
     loop do
       id += 1
-      id %= 3
+      id %= @players.size
       next if @players[id].is_back
 
       break id
