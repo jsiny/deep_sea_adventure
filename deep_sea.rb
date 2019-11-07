@@ -14,10 +14,13 @@ configure do
   set :erb,            escape_html: true
 end
 
-before '/round/:round_id/player/:player_id' do
+before '/round/:round_id/*' do
   @round_id  = params[:round_id].to_i
-  @player_id = params[:player_id].to_i
   @round     = session[:game].round
+end
+
+before '/round/:round_id/player/:player_id' do
+  @player_id = params[:player_id].to_i
   @player    = session[:game].players[@player_id]
   @players   = session[:game].players
 end
@@ -48,10 +51,6 @@ def reduce_oxygen(player)
   message(alert, 'warning') if @round.reduce_oxygen?(treasures)
 end
 
-# def find_player(id)
-  
-# end
-
 # Homepage
 get '/' do
   erb :home
@@ -74,6 +73,8 @@ get '/round/:round_id/player/:player_id' do
   erb :round
 end
 
+# Player submits form (diving/surface, treasure) &
+# oxygen is reduced for next player
 post '/round/:round_id/player/:player_id' do
   keep_diving = params[:dive]     # true / false (str)
   back        = params[:back]     # true / false (str)
@@ -85,4 +86,9 @@ post '/round/:round_id/player/:player_id' do
   next_player = @round.next_id(@player_id)
   reduce_oxygen(@players[next_player])
   redirect "/round/#{@round_id}/player/#{next_player}"
+end
+
+# Display round score
+get '/round/:round_id/score' do
+  erb :score
 end

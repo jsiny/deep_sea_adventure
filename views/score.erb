@@ -1,0 +1,17 @@
+<% content_for :title do %>
+  Round <%= @round_id %> - Score
+<% end %>
+
+<legend>Add score for the divers who made it back</legend>
+
+<%# <div class="btn-group btn-group-toggle" data-toggle="buttons">
+  <label class="btn btn-outline-primary">
+    <input type="radio" name="dive" value="false">Go back up 👍
+  </label>
+  <label class="btn btn-outline-primary active">
+    <input type="radio" checked name="dive" value="true">Keep diving 👎
+  </label>
+</div> %>
+<div>
+<input type="number" value="50" min="0" max="100" step="10"/>
+</div>

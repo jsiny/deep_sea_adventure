@@ -37,7 +37,7 @@ input {
   padding: 3px;
 }
 
-.btn {
+button.submit {
   margin-top: 30px;
 }
 
