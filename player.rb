@@ -1,5 +1,5 @@
 class Player
-  attr_accessor :going_up
+  attr_accessor :going_up, :score
   attr_reader   :treasures, :is_back
 
   def initialize(name)
