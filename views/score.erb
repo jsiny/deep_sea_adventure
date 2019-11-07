@@ -2,28 +2,6 @@
   Round <%= @round_id %> - Score
 <% end %>
 
-<div class="score">
-
-  <% if @round.any_back? %>
-    <legend>Add score for the divers who made it back</legend>
-    <form id='' action='#' method='post'>
-      <% @round.players.each_with_index do |player, id| %>
-        <% next unless player.is_back %>
-        <div class="form-group row">
-          <label for="player-<%= id %>" class="col-sm-2 offset-4 col-form-label">
-            <%= player %>
-          </label>
-          <div class="col-sm-2">
-            <input type="number" name="player-<%= id %>" value="<%= player.score %>" min="0" max="100" step="1"/>
-          </div>
-        </div>
-
-      <% end %>
-      <button type='submit' class="btn btn-outline-success submit">Save</button>
-    </form>
-  <% end %>
-</div>
-
 <div class='score'>
   <% unless @round.all_back? %>
     <legend>Divers who drowned</legend>
@@ -43,3 +21,43 @@
     </table>
   <% end %>
 <div>
+
+<% if (@round.any_back? || @round_id != 3) %>
+
+  <div class="score">
+    <% if @round.any_back? %>
+      <legend>Add score for the divers who made it back</legend>
+      <form id='' action='#' method='post'>
+        <% @round.players.each_with_index do |player, id| %>
+          <% next unless player.is_back %>
+          <div class="form-group row">
+            <label for="player-<%= id %>" class="col-sm-2 offset-4 col-form-label">
+              <%= player %>
+            </label>
+            <div class="col-sm-2">
+              <input type="number" name="player-<%= id %>" value="<%= player.score %>" min="0" max="100" step="1"/>
+            </div>
+          </div>
+
+        <% end %>
+
+        <% unless @round_id == 3 %>
+          <legend>Who's the next player?</legend>
+          <div class='row justify-content-md-center'>
+          <div class="input-group mb-3 col-sm-4">
+            <select class="custom-select" id="inputGroupSelect01">
+              <option selected>Select Player</option>
+              <% @round.players.each_with_index do |player, id| %>
+                <option value="<%= id %>"><%= player %></option>
+              <% end %>
+            </select>
+            </div>
+          </div>
+
+        <% end %>
+        <button type='submit' class="btn btn-outline-success submit">Save</button>
+      </form>
+    <% end %>
+  </div>
+<% end %>
+
