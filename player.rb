@@ -13,7 +13,7 @@ class Player
     @going_up  = false
     @is_back   = false
   end
-  
+
   def to_s
     @name
   end
@@ -28,7 +28,6 @@ class Player
 
   def save_treasure(treasure)
     case treasure
-    when 'none'   then return
     when 'add'    then @treasures += 1
     when 'remove' then remove_treasure
     end

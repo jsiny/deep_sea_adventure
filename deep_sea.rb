@@ -11,7 +11,7 @@ require_relative 'round'
 configure do
   enable :sessions
   set :session_secret, ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
-  set :erb, :escape_html => true
+  set :erb,            escape_html: true
 end
 
 before '/round/:round_id/player/:player_id' do
@@ -44,10 +44,8 @@ end
 
 def reduce_oxygen(player)
   treasures = player.treasures
-
-  if @round.reduce_oxygen?(treasures)
-    message("#{player} has reduced the oxygen by #{treasures}", 'warning')
-  end
+  alert = "#{player} has reduced the oxygen by #{treasures}"
+  message(alert, 'warning') if @round.reduce_oxygen?(treasures)
 end
 
 # Homepage
