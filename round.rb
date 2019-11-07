@@ -1,7 +1,7 @@
 class Round
   MAX_OXYGEN = 25
 
-  attr_accessor :remaining_oxygen
+  # attr_accessor :remaining_oxygen
 
   def initialize(players, index)
     @remaining_oxygen = MAX_OXYGEN
@@ -9,6 +9,10 @@ class Round
     @players = players
     @index = index
     @treasures_taken = 0
+  end
+
+  def remaining_oxygen
+    @remaining_oxygen < 0 ? 0 : @remaining_oxygen
   end
 
   def consumed_oxygen
@@ -20,7 +24,7 @@ class Round
   end
 
   def reduce_oxygen?(treasures)
-    self.remaining_oxygen -= treasures unless treasures.zero?
+    @remaining_oxygen -= treasures unless treasures.zero?
   end
 
   def next_id(current_player_id)

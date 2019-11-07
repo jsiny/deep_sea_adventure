@@ -77,10 +77,8 @@ post '/round/:round_id/player/:player_id' do
   treasure    = params[:treasure] # add, remove, none
 
   @player.save_info(keep_diving, back, treasure)
-
   redirect '/round/1/score' if @round.over?
 
   next_player = @round.next_id(@player_id)
-
   redirect "/round/#{@round_id}/player/#{next_player}"
 end
