@@ -3,6 +3,8 @@ require 'sinatra/reloader' if development?
 require 'sinatra/content_for'
 require 'tilt/erubis'
 require 'securerandom'
+require 'psych'
+require 'pry'
 
 require_relative 'game'
 require_relative 'player'
@@ -36,7 +38,6 @@ def add_players(params)
   players = params.values.reject(&:empty?).map(&:capitalize)
 
   if (3..6).cover?(players.size)
-    # players.each { |name| @game.add_player(name) }
     players.each { |name| session[:game].add_player(name) }
     message("The following players will dive: #{players.join(', ')}")
     session[:game].start

@@ -94,14 +94,11 @@ class DeepSeaTest < Minitest::Test
 
   def test_player_takes_no_treasure
     create_game(players)
-    puts game
 
     post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'none' }
     assert_equal 302,   last_response.status
     assert_equal 0,     game.players[1].treasures
     assert_equal false, game.players[1].going_up
-
-    puts game
   end
 
   # def test_player_leaves_treasure_and_goes_up
