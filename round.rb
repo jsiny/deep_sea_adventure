@@ -34,4 +34,14 @@ class Round
       break id
     end
   end
+
+  def over?
+    remaining_oxygen.zero? || all_back?
+  end
+
+  private
+
+  def all_back?
+    @players.all? { |player| player.is_back }
+  end
 end
