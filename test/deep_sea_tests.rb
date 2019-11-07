@@ -253,4 +253,18 @@ class DeepSeaTest < Minitest::Test
     post '/round/1/player/0', { 'keep_diving' => 'true',  'treasure' => 'none' }
     assert_includes last_response.headers['Location'], '/round/1/score'
   end
+
+  def test_back_and_forth_browser_does_not_affect_oxygen
+    create_game(players)
+
+    post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'add' }
+
+    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'none' }
+    get '/round/1/player/1'
+    assert_includes last_response.body, "aria-valuenow=1"
+    
+    get '/round/1/player/0'
+    get '/round/1/player/1'
+    assert_includes last_response.body, "aria-valuenow=1"
+  end
 end
