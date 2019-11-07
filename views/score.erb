@@ -6,7 +6,7 @@
 
   <% if @round.any_back? %>
     <legend>Add score for the divers who made it back</legend>
-    <form>
+    <form id='' action='#' method='post'>
       <% @round.players.each_with_index do |player, id| %>
         <% next unless player.is_back %>
         <div class="form-group row">
@@ -19,7 +19,27 @@
         </div>
 
       <% end %>
-      <button type='submit' class="btn btn-outline-success submit">Submit</button>
+      <button type='submit' class="btn btn-outline-success submit">Save</button>
     </form>
+  <% end %>
+</div>
+
+<div class='score'>
+  <% unless @round.all_back? %>
+    <legend>Divers who drowned</legend>
+    <table class="table offset-4 col-sm-4">
+      <tr>
+        <th style="width: 50%"></th>
+        <th style="width: 50%"></th>
+      </tr>
+
+      <% @round.players.each do |player| %>
+        <% next if player.is_back %>
+        <tr>
+          <td><%= player %></td>
+          <td><%= player.score %> points</td>
+        </tr>
+      <% end %>
+    </table>
   <% end %>
 <div>

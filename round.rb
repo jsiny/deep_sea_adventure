@@ -44,13 +44,11 @@ class Round
     remaining_oxygen.zero? || all_back?
   end
 
-  def any_back?
-    @players.any?(&:is_back)
-  end
-
-  private
-
   def all_back?
     @players.all?(&:is_back)
+  end
+
+  def any_back?
+    @players.any?(&:is_back)
   end
 end

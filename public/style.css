@@ -61,3 +61,7 @@ hr {
 .score {
   margin-top: 24px;
 }
+
+table, td, th {
+  border: none !important;
+}
