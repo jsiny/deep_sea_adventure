@@ -218,4 +218,37 @@ class DeepSeaTest < Minitest::Test
     get '/round/1/player/1'
     refute_includes last_response.body, "Lana has reduced the oxygen by 1"
   end
+
+  def test_finish_round_players_back
+    create_game(players)
+
+    3.times do |id|
+      post "/round/1/player/#{id}", { 'keep_diving' => 'true',  'treasure' => 'add' }
+      post "/round/1/player/#{id}", { 'keep_diving' => 'false', 'treasure' => 'add' }
+      post "/round/1/player/#{id}", { 'back'        => 'true',  'treasure' => 'none' }
+    end
+
+    assert_includes last_response.headers['Location'], '/round/1/score'
+  end
+
+  def test_finish_round_no_more_oxygen
+    create_game(players)
+
+    4.times do
+      post '/round/1/player/0', { 'keep_diving' => 'true',  'treasure' => 'add' }
+    end
+
+    5.times do
+      get '/round/1/player/0'
+    end
+
+    get '/round/1/player/0'
+    assert_includes last_response.body, "1</strong> slots of oxygen left"
+
+    get '/round/1/player/0'
+    assert_includes last_response.body, "0</strong> slots of oxygen left"
+
+    post '/round/1/player/0', { 'keep_diving' => 'true',  'treasure' => 'none' }
+    assert_includes last_response.headers['Location'], '/round/1/score'
+  end
 end
