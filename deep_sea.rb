@@ -93,6 +93,7 @@ get '/round/:round_id/score' do
   erb :score
 end
 
+# Save end of round info (score & next player)
 post '/round/:round_id/save' do
   next_player = params[:next_player].to_i
   @players.each_with_index do |player, id|
@@ -101,6 +102,7 @@ post '/round/:round_id/save' do
     points = params[player_id].to_i
     player.add_score(points)
   end
-
+  @players.each { |player| player.reset }
+  session[:game].new_round(@players, next_player)
   redirect '/'
 end

@@ -48,7 +48,7 @@
         <div class='score next-player'>
         <legend>Who's the next player?</legend>
         <div class="input-group mb-3">
-          <select class="custom-select" name="next-player">
+          <select class="custom-select" name="next_player">
             <option selected>Select Player</option>
             <% @round.players.each_with_index do |player, id| %>
               <option value="<%= id %>"><%= player %></option>
