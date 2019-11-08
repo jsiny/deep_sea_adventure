@@ -120,5 +120,6 @@ end
 
 get '/end' do
   message("The 3 rounds are over!")
+  session[:game].compute_scores
   erb :end
 end

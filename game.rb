@@ -2,12 +2,13 @@ class Game
   ROUNDS_NUMBER = 3
 
   attr_accessor :players, :round, :remaining_rounds
+  attr_reader   :winner,  :scoreboard
 
   def initialize
     @players          = []
     @remaining_rounds = ROUNDS_NUMBER
     @winner           = nil
-    @scoreboard       = Hash.new(0)
+    @scoreboard       = nil
   end
 
   def add_player(name)
@@ -30,9 +31,10 @@ class Game
     @players.each_with_object({}) do |player, hash|
       hash[player] = player.score
     end
+      .sort_by { |player, score| -score }
   end
 
   def compute_winner
-    scoreboard.max_by { |player, score| score }
+    scoreboard[0][0]
   end
 end

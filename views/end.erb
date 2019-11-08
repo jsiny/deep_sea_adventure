@@ -3,7 +3,7 @@
 <% end %>
 
 <legend>🏆 Winner 🏆</legend>
-<p>Charles</p>
+<p><%= session[:game].winner %></p>
 
 <br>
 
@@ -16,20 +16,12 @@
         <th style="width: 50%">Score</th>
       </tr>
 
-      <tr>
-        <td>Charles</td>
-        <td>10 points</td>
-      </tr>
-
-      <tr>
-        <td>Beatrice</td>
-        <td>7 points</td>
-      </tr>
-
-      <tr>
-        <td>Adam</td>
-        <td>3 points</td>
-      </tr>
+      <% session[:game].scoreboard.each do |player, score| %>
+        <tr>
+          <td><%= player %></td>
+          <td><%= score %> points</td>
+        </tr>
+      <% end %>
     </table>
   </div>
 
