@@ -45,7 +45,7 @@ def end_round_no_oxygen_some_players_back(round_id)
   player_turn(round_id, 1, 'none', false)
   player_turn(round_id, 1, 'none', false, true)
   
-  # Tank runs out of oxygen
+  # Tank runs out of oxygen, players 0 and 2 drowned
   7.times { player_turn(round_id, 2, 'none') }
 
   # Last player turn is redirected to score view

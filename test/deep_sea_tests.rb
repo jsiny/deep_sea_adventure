@@ -71,16 +71,16 @@ class DeepSeaTest < Minitest::Test
                 "player5" => "Pam", "player6" => "Krieger" }
 
     create_game(players)
-    post '/round/1/player/2', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    player_turn(1, 2, 'add')
     assert_includes last_response.headers['Location'], '/round/1/player/3'
 
-    post '/round/1/player/3', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    player_turn(1, 3, 'add')
     assert_includes last_response.headers['Location'], '/round/1/player/4'
 
-    post '/round/1/player/4', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    player_turn(1, 4, 'add')
     assert_includes last_response.headers['Location'], '/round/1/player/5'
 
-    post '/round/1/player/5', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    player_turn(1, 5, 'add')
     assert_includes last_response.headers['Location'], '/round/1/player/0'
 
     players.values.each do |name|
@@ -105,7 +105,8 @@ class DeepSeaTest < Minitest::Test
 
   def test_send_first_player_turn
     create_game(players)
-    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'add' }
+
+    player_turn(1, 0, 'add')
     assert_equal 302,   last_response.status
     assert_equal 1,     game.players[0].treasures
     assert_equal false, game.players[0].going_up
@@ -118,7 +119,7 @@ class DeepSeaTest < Minitest::Test
   def test_player_takes_no_treasure
     create_game(players)
 
-    post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'none' }
+    player_turn(1, 1, 'none')
     assert_equal 302,   last_response.status
     assert_equal 0,     game.players[1].treasures
     assert_equal false, game.players[1].going_up
@@ -127,21 +128,21 @@ class DeepSeaTest < Minitest::Test
   def test_player_takes_and_leaves_treasures
     create_game(players)
 
-    post '/round/1/player/2', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    player_turn(1, 2, 'add')
     assert_equal 302,   last_response.status
     assert_equal 1,     game.players[2].treasures
     assert_equal false, game.players[2].going_up
 
-    post '/round/1/player/2', { 'keep_diving' => 'false', 'treasure' => 'add' }
+    player_turn(1, 2, 'add', false)
     assert_equal 302,   last_response.status
     assert_equal 2,     game.players[2].treasures
 
-    post '/round/1/player/2', { 'back' => 'false', 'treasure' => 'remove' }
+    player_turn(1, 2, 'remove', false, false)
     assert_equal 302,   last_response.status
     assert_equal 1,     game.players[2].treasures
     assert_equal false, game.players[2].is_back
 
-    post '/round/1/player/2', { 'back' => 'true', 'treasure' => 'none' }
+    player_turn(1, 2, 'none', false, true)
     assert_equal 302,   last_response.status
     assert_equal 1,     game.players[2].treasures
     assert_equal true,  game.players[2].is_back
@@ -150,10 +151,10 @@ class DeepSeaTest < Minitest::Test
   def test_player_treasure_persists
     create_game(players)
 
-    post '/round/1/player/2', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    player_turn(1, 2, 'add')
     assert_equal 1,     game.players[2].treasures
 
-    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'none' }
+    player_turn(1, 0, 'none')
     assert_equal 1,     game.players[2].treasures
     assert_equal 0,     game.players[0].treasures
   end
@@ -161,14 +162,14 @@ class DeepSeaTest < Minitest::Test
   def test_correct_redirection_player_turn
     create_game(players)
 
-    post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    player_turn(1, 1, 'add')
     assert_includes last_response.headers['Location'], '/round/1/player/2'
 
     get last_response.headers['Location']
     assert 200, last_response.status
     assert_includes last_response.body, "It's Malory's turn!"
 
-    post '/round/1/player/2', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    player_turn(1, 2, 'add')
     assert_includes last_response.headers['Location'], '/round/1/player/0'
 
     get last_response.headers['Location']
@@ -179,43 +180,44 @@ class DeepSeaTest < Minitest::Test
   def test_redirection_when_player_back
     create_game(players)
 
-    post '/round/1/player/1', { 'keep_diving' => 'true',  'treasure' => 'add' }
-    post '/round/1/player/1', { 'keep_diving' => 'false', 'treasure' => 'add' }
-    post '/round/1/player/1', { 'back'        => 'true',  'treasure' => 'none' }
+    player_turn(1, 1, 'add')
+    player_turn(1, 1, 'add', false)
+    player_turn(1, 1, 'none', false, true)
 
-    post '/round/1/player/0', { 'keep_diving' => 'true',  'treasure' => 'add' }
+    player_turn(1, 0, 'add')
     assert_includes last_response.headers['Location'], '/round/1/player/2'
   end
 
   def test_redirection_when_only_player_left
     create_game(players)
 
-    post '/round/1/player/1', { 'keep_diving' => 'true',  'treasure' => 'add' }
-    post '/round/1/player/1', { 'keep_diving' => 'false', 'treasure' => 'add' }
-    post '/round/1/player/1', { 'back'        => 'true',  'treasure' => 'none' }
+    player_turn(1, 1, 'add')
+    player_turn(1, 1, 'add', false)
+    player_turn(1, 1, 'none', false, true)
 
-    post '/round/1/player/2', { 'keep_diving' => 'true',  'treasure' => 'add' }
-    post '/round/1/player/2', { 'keep_diving' => 'false', 'treasure' => 'add' }
-    post '/round/1/player/2', { 'back'        => 'true',  'treasure' => 'none' }
+    player_turn(1, 2, 'add')
+    player_turn(1, 2, 'add', false)
+    player_turn(1, 2, 'none', false, true)
 
-    post '/round/1/player/0', { 'keep_diving' => 'true',  'treasure' => 'add' }
+    player_turn(1, 0, 'add')
     assert_includes last_response.headers['Location'], '/round/1/player/0'
   end
 
   def test_display_oxygen_alert
     create_game(players)
 
-    post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'add' }
+    player_turn(1, 1, 'add')
 
     get '/round/1/player/2'
     refute_includes last_response.body, "Lana has reduced the oxygen by 1"
 
-    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'none' }
+    player_turn(1, 0, 'none')
     get '/round/1/player/1'
     assert_includes last_response.body, "Lana has reduced the oxygen by 1"
 
-    post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'remove' }
-    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'none' }
+    player_turn(1, 1, 'remove')
+    player_turn(1, 0, 'none')
+
     get '/round/1/player/1'
     refute_includes last_response.body, "Lana has reduced the oxygen by 1"
   end
@@ -223,9 +225,8 @@ class DeepSeaTest < Minitest::Test
   def test_back_and_forth_browser_does_not_affect_oxygen
     create_game(players)
 
-    post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'add' }
-
-    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'none' }
+    player_turn(1, 1, 'add')
+    player_turn(1, 0, 'none')
     get '/round/1/player/1'
     assert_includes last_response.body, "aria-valuenow=1"
     
@@ -244,22 +245,17 @@ class DeepSeaTest < Minitest::Test
   def test_finish_round_no_more_oxygen
     create_game(players)
 
-    4.times do
-      post '/round/1/player/0', { 'keep_diving' => 'true',  'treasure' => 'add' }
-    end
-
-    6.times do
-      post '/round/1/player/2', { 'keep_diving' => 'true',  'treasure' => 'none' }
-    end
+    4.times { player_turn(1, 0, 'add') }
+    6.times { player_turn(1, 2, 'none') }
 
     get '/round/1/player/0'
     assert_includes last_response.body, "1</strong> slots of oxygen left"
 
-    post '/round/1/player/2', { 'keep_diving' => 'true',  'treasure' => 'none' }
+    player_turn(1, 2, 'none')
     get '/round/1/player/0'
     assert_includes last_response.body, "0</strong> slots of oxygen left"
 
-    post '/round/1/player/0', { 'keep_diving' => 'true',  'treasure' => 'none' }
+    player_turn(1, 0, 'none')
     assert_includes last_response.headers['Location'], '/round/1/score'
   end
 
