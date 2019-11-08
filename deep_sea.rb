@@ -37,7 +37,7 @@ def add_players(params)
   if (3..6).cover?(players.size)
     players.each { |name| session[:game].add_player(name) }
     message("The following players will dive: #{players.join(', ')}")
-    session[:game].start
+    session[:game].next_round
     redirect '/round/1/player/0'
   else
     message('You need 3 to 6 divers', 'danger')
@@ -49,6 +49,21 @@ def reduce_oxygen(player)
   treasures = player.treasures
   alert = "#{player} has reduced the oxygen by #{treasures}"
   message(alert, 'warning') if @round.reduce_oxygen?(treasures)
+end
+
+def save_round_info(params)
+  @players.each_with_index do |player, id|
+    next unless player.is_back
+    player_id = "player_#{id}".to_sym
+    points = params[player_id].to_i
+    player.add_score(points)
+  end
+end
+
+def start_next_round(params)
+  @players.each(&:reset)
+  next_player = params[:next_player].to_i
+  session[:game].next_round(next_player)
 end
 
 # Homepage
@@ -95,14 +110,7 @@ end
 
 # Save end of round info (score & next player)
 post '/round/:round_id/save' do
-  next_player = params[:next_player].to_i
-  @players.each_with_index do |player, id|
-    next unless player.is_back
-    player_id = "player_#{id}".to_sym
-    points = params[player_id].to_i
-    player.add_score(points)
-  end
-  @players.each { |player| player.reset }
-  session[:game].new_round(@players, next_player)
+  save_round_info(params)
+  start_next_round(params)
   redirect '/'
 end
