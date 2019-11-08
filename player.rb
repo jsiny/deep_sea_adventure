@@ -24,8 +24,8 @@ class Player
     save_treasure(treasure)
   end
 
-  def add_score(points)
-    @score += points
+  def new_score(points)
+    @score = points
   end
 
   private
