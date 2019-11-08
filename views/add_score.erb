@@ -1,0 +1,15 @@
+<legend>Add score for the divers who made it back</legend>
+<div class='score'>
+  <% @round.players_back_on_submarine.each do |player, id| %>
+    <div class="form-group row">    
+      <label for="player_<%= id %>" class="col-sm-4 col-form-label">
+        <%= player %>
+      </label>
+      <div class="col-sm-2">
+      </div>            
+      <div class="col-sm-4">
+        <input type="number" name="player_<%= id %>" value="<%= player.score %>" min="<%= player.score %>" max="100" step="1"/>
+      </div>
+    </div>
+  <% end %>
+</div>

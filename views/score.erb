@@ -3,63 +3,21 @@
 <% end %>
 
 <% unless @round.all_back? %>
-  <div class='score row justify-content-md-center'>
-    <legend>Divers who drowned</legend>
-    <table class="table col-sm-4">
-      <tr>
-        <th style="width: 50%"></th>
-        <th style="width: 50%"></th>
-      </tr>
-
-      <% @round.players.each do |player| %>
-        <% next if player.is_back %>
-        <tr>
-          <td><%= player %></td>
-          <td><%= player.score %> points</td>
-        </tr>
-      <% end %>
-    </table>
-  </div>
+  <%== erb :drowned_score %>
 <% end %>
 
 <% if (@round.any_back? || @round_id != 3) %>
   <div class="row justify-content-md-center">
-    <form id='' action="/round/<%= @round_id %>/save" method='post'>
+    <form action="/round/<%= @round_id %>/save" method='post'>
       <% if @round.any_back? %>
-        <legend>Add score for the divers who made it back</legend>
-        <div class='score'>
-          <% @round.players.each_with_index do |player, id| %>
-            <% next unless player.is_back %>
-            <div class="form-group row">    
-              <label for="player_<%= id %>" class="col-sm-4 col-form-label">
-                <%= player %>
-              </label>
-              <div class="col-sm-2">
-              </div>            
-              <div class="col-sm-4">
-                <input type="number" name="player_<%= id %>" value="<%= player.score %>" min="<%= player.score %>" max="100" step="1"/>
-              </div>
-            </div>
-          <% end %>
-        </div>
+        <%== erb :add_score %>
       <% end %>
 
       <% unless @round_id == 3 %>
-        <div class='score next-player'>
-        <legend>Who's the next player?</legend>
-        <div class="input-group mb-3">
-          <select class="custom-select" name="next_player">
-            <option selected>Select Player</option>
-            <% @round.players.each_with_index do |player, id| %>
-              <option value="<%= id %>"><%= player %></option>
-            <% end %>
-          </select>
-        </div>
-        </div>
+        <%== erb :next_player %>
       <% end %>
 
       <button type='submit' class="btn btn-outline-success submit">Save</button>
     </form>
   </div>
 <% end %>
-

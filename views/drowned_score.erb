@@ -1,0 +1,16 @@
+<div class='score row justify-content-md-center'>
+  <legend>Divers who drowned</legend>
+  <table class="table col-sm-4">
+    <tr>
+      <th style="width: 50%"></th>
+      <th style="width: 50%"></th>
+    </tr>
+
+    <% @round.drowned_players.each do |player, _| %>
+      <tr>
+        <td><%= player %></td>
+        <td><%= player.score %> points</td>
+      </tr>
+    <% end %>
+  </table>
+</div>
