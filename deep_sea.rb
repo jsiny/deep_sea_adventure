@@ -58,11 +58,11 @@ def save_round_info(params)
     points = params[player_id].to_i
     player.new_score(points)
   end
-  @players.each(&:reset)
+  # @players.each(&:reset)
 end
 
 def start_next_round(params)
-  # @players.each(&:reset)
+  @players.each(&:reset)
   next_player = params[:next_player].to_i
   session[:game].next_round(next_player)
   next_round_id = @round_id + 1
