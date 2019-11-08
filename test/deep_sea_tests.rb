@@ -298,6 +298,38 @@ class DeepSeaTest < Minitest::Test
     assert_includes last_response.body, "<button type='submit'"
   end
 
+  def test_access_round_score_no_more_oxygen_some_players_back
+    create_game(players)
+    end_round_no_oxygen_some_players_back(1)
+
+    assert_equal 302, last_response.status
+    assert_includes last_response.headers['Location'], '/round/1/score'
+    
+    get last_response.headers['Location']
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "Round 1 - Score"
+
+    # Only Archer and Malory drowned
+    assert_includes last_response.body, "Divers who drowned"
+    assert_includes last_response.body, "<td>Archer</td>"
+    assert_includes last_response.body, "<td>Malory</td>"
+    refute_includes last_response.body, "<td>Lana</td>"
+    assert_includes last_response.body, "<td>0 points</td>"
+
+    # Score can only be added to Lana
+    assert_includes last_response.body, "Add score for the divers"
+    refute_includes last_response.body, '<label for="player_2"'
+    refute_includes last_response.body, '<label for="player_0"'
+    assert_includes last_response.body, '<label for="player_1"'
+
+    # Only Archer and Malory can be selected for next player
+    assert_includes last_response.body, '<option value="0">Archer'
+    assert_includes last_response.body, '<option value="2">Malory'
+    refute_includes last_response.body, '<option value="1">Lana'
+
+    assert_includes last_response.body, "<button type='submit'"
+  end
+
   def test_save_info_end_of_round_players_back
     create_game(players)
     end_round_when_players_back(1)
@@ -345,10 +377,6 @@ class DeepSeaTest < Minitest::Test
   def test_save_info_oxygen_left_some_players_back
     create_game(players)
     end_round_no_oxygen_some_players_back(1)
-
-    assert_equal 302, last_response.status
-    assert_includes last_response.headers['Location'], '/round/1/score'
-
     post '/round/1/save', { 'next_player' => '2', 'player_1' => '4' }
 
     assert_equal 302, last_response.status
