@@ -392,4 +392,28 @@ class DeepSeaTest < Minitest::Test
       assert_equal 0,     game.players[id].treasures
     end
   end
+
+  def test_no_next_player_form_round_3
+    create_game(players)
+    end_round_no_oxygen_some_players_back(3)
+    assert_equal 302, last_response.status
+
+    get last_response.headers['Location']
+    assert_equal 200, last_response.status
+    refute_includes last_response.body, "Who's the next player?"
+    refute_includes last_response.body, '<option value="0">Archer'
+    refute_includes last_response.body, '<option value="1">Lana'
+    refute_includes last_response.body, '<option value="2">Malory'
+  end
+
+  def test_next_button_all_drowned_round_3
+    create_game(players)
+    end_round_when_no_oxygen(3)
+    assert_equal 302, last_response.status
+
+    get last_response.headers['Location']
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, 'href="/end"'
+    refute_includes last_response.body, "<button type='submit'"
+  end
 end

@@ -114,7 +114,8 @@ end
 # Save end of round info (score & next player)
 post '/round/:round_id/save' do
   save_round_info(params)
-  start_next_round(params)
+  start_next_round(params) unless @round_id == 3
+  redirect '/end'
 end
 
 get '/end' do
