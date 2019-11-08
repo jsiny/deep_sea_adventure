@@ -1,6 +1,6 @@
 class Player
-  attr_accessor :going_up, :score
-  attr_reader   :treasures, :is_back, :points
+  attr_accessor :going_up
+  attr_reader   :treasures, :is_back, :score
 
   def initialize(name)
     @name  = name
