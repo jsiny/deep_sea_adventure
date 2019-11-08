@@ -16,28 +16,38 @@ def game
   session[:game]
 end
 
+def player_turn(round_id, player_id, treasure, keep_diving = true, back = false)
+  post "/round/#{round_id}/player/#{player_id}",
+    { 'keep_diving' => keep_diving.to_s, 
+      'treasure'    => treasure, 
+      'back'        => back.to_s }
+end
+
 def end_round_when_players_back(round_id)
   3.times do |id|
-    post "/round/#{round_id}/player/#{id}", { 'keep_diving' => 'true', 
-                                              'treasure'    => 'add' }
-    post "/round/#{round_id}/player/#{id}", { 'keep_diving' => 'false',
-                                              'treasure'    => 'add' }
-    post "/round/#{round_id}/player/#{id}", { 'back'        => 'true',
-                                              'treasure'    => 'none' }
+    player_turn(round_id, id, 'add')
+    player_turn(round_id, id, 'add', false)
+    player_turn(round_id, id, 'none', false, true)
   end
 end
 
 def end_round_when_no_oxygen(round_id)
-  4.times do
-    post "/round/#{round_id}/player/0", { 'keep_diving' => 'true', 
-                                          'treasure'    => 'add' }
-  end
+  4.times { player_turn(round_id, 0, 'add') }
+  7.times { player_turn(round_id, 2, 'none') }
+  player_turn(round_id, 0, 'none')
+end
 
-  7.times do
-    post "/round/#{round_id}/player/2", { 'keep_diving' => 'true',
-                                          'treasure'    => 'none' }
-  end
+def end_round_no_oxygen_some_players_back(round_id)
+  4.times { player_turn(round_id, 0, 'add') }
+  
+  # Player 1 adds a treasure and goes back up
+  player_turn(round_id, 1, 'add')
+  player_turn(round_id, 1, 'none', false)
+  player_turn(round_id, 1, 'none', false, true)
+  
+  # Tank runs out of oxygen
+  7.times { player_turn(round_id, 2, 'none') }
 
-  post "/round/#{round_id}/player/0", { 'keep_diving' => 'true',
-                                        'treasure'    => 'none' }
+  # Last player turn is redirected to score view
+  player_turn(round_id, 0, 'none')
 end

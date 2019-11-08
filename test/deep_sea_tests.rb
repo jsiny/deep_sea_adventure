@@ -336,4 +336,12 @@ class DeepSeaTest < Minitest::Test
 
     assert_equal game.players[2], game.round.next_player
   end
+
+  def test_save_info_oxygen_left_some_players_back
+    create_game(players)
+    end_round_no_oxygen_some_players_back(1)
+
+    assert_equal 302, last_response.status
+    assert_includes last_response.headers['Location'], '/round/1/score'
+  end
 end
