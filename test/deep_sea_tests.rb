@@ -339,5 +339,18 @@ class DeepSeaTest < Minitest::Test
 
     assert_equal 302, last_response.status
     assert_includes last_response.headers['Location'], '/round/1/score'
+
+    post '/round/1/save', { 'next_player' => '2', 'player_1' => '4' }
+
+    assert_equal 302, last_response.status
+    assert_equal 0, game.players[0].score
+    assert_equal 4, game.players[1].score
+    assert_equal 0, game.players[2].score
+
+    3.times do |id|
+      assert_equal false, game.players[id].going_up
+      assert_equal false, game.players[id].is_back
+      assert_equal 0,     game.players[id].treasures
+    end
   end
 end
