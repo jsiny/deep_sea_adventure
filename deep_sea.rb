@@ -116,3 +116,8 @@ post '/round/:round_id/save' do
   save_round_info(params)
   start_next_round(params)
 end
+
+get '/end' do
+  message("The 3 rounds are over!")
+  erb :end
+end
