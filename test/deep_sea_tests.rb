@@ -329,6 +329,7 @@ class DeepSeaTest < Minitest::Test
     post '/round/1/save', { 'next_player' => '2' }
     assert_equal 302, last_response.status
     assert_includes last_response.headers['Location'], '/round/2/player/2'
+    assert_equal "Round 2 has started!", session[:message][:text]
 
     3.times do |id|
       assert_equal false, game.players[id].going_up

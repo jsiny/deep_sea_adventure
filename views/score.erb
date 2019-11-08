@@ -37,7 +37,7 @@
               <div class="col-sm-2">
               </div>            
               <div class="col-sm-4">
-                <input type="number" name="player_<%= id %>" value="<%= player.score %>" min="0" max="100" step="1"/>
+                <input type="number" name="player_<%= id %>" value="<%= player.score %>" min="<%= player.score %>" max="100" step="1"/>
               </div>
             </div>
           <% end %>

@@ -64,7 +64,9 @@ def start_next_round(params)
   @players.each(&:reset)
   next_player = params[:next_player].to_i
   session[:game].next_round(next_player)
-  redirect "/round/#{@round_id + 1}/player/#{next_player}"
+  next_round_id = @round_id + 1
+  message("Round #{next_round_id} has started!")
+  redirect "/round/#{next_round_id}/player/#{next_player}"
 end
 
 # Homepage
@@ -97,7 +99,7 @@ post '/round/:round_id/player/:player_id' do
   treasure    = params[:treasure] # add, remove, none
 
   @player.save_info(keep_diving, back, treasure)
-  redirect '/round/1/score' if @round.over?
+  redirect "/round/#{@round_id}/score" if @round.over?
 
   next_player = @round.next_id(@player_id)
   reduce_oxygen(@players[next_player])
