@@ -275,7 +275,7 @@ class DeepSeaTest < Minitest::Test
     assert_includes last_response.body, "Round 1 - Score"
     refute_includes last_response.body, "Divers who drowned"
     assert_includes last_response.body, "Add score for the divers"
-    assert_includes last_response.body, '<label for="player-2"'
+    assert_includes last_response.body, '<label for="player_2"'
     assert_includes last_response.body, '<option value="0">Archer'
     assert_includes last_response.body, "<button type='submit'"
   end
@@ -294,7 +294,7 @@ class DeepSeaTest < Minitest::Test
     assert_includes last_response.body, "<td>Archer</td>"
     assert_includes last_response.body, "<td>0 points</td>"
     refute_includes last_response.body, "Add score for the divers"
-    refute_includes last_response.body, '<label for="player-2"'
+    refute_includes last_response.body, '<label for="player_2"'
     assert_includes last_response.body, '<option value="0">Archer'
     assert_includes last_response.body, "<button type='submit'"
   end

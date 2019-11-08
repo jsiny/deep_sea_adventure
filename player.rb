@@ -1,6 +1,6 @@
 class Player
   attr_accessor :going_up, :score
-  attr_reader   :treasures, :is_back
+  attr_reader   :treasures, :is_back, :points
 
   def initialize(name)
     @name  = name
@@ -22,6 +22,10 @@ class Player
     @going_up = true if keep_diving == 'false'
     @is_back  = true if back        == 'true'
     save_treasure(treasure)
+  end
+
+  def add_score(points)
+    @score += points
   end
 
   private

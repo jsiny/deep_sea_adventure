@@ -17,12 +17,12 @@ end
 before '/round/:round_id/*' do
   @round_id  = params[:round_id].to_i
   @round     = session[:game].round
+  @players   = session[:game].players
 end
 
 before '/round/:round_id/player/:player_id' do
   @player_id = params[:player_id].to_i
   @player    = session[:game].players[@player_id]
-  @players   = session[:game].players
 end
 
 helpers do
@@ -91,4 +91,16 @@ end
 # Display round score
 get '/round/:round_id/score' do
   erb :score
+end
+
+post '/round/:round_id/save' do
+  next_player = params[:next_player].to_i
+  @players.each_with_index do |player, id|
+    next unless player.is_back
+    player_id = "player_#{id}".to_sym
+    points = params[player_id].to_i
+    player.add_score(points)
+  end
+
+  redirect '/'
 end
