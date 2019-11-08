@@ -11,8 +11,7 @@
         <th style="width: 50%"></th>
       </tr>
 
-      <% @round.players.each do |player| %>
-        <% next if player.is_back %>
+      <% @round.drowned_players.each do |player, _| %>
         <tr>
           <td><%= player %></td>
           <td><%= player.score %> points</td>
@@ -28,8 +27,7 @@
       <% if @round.any_back? %>
         <legend>Add score for the divers who made it back</legend>
         <div class='score'>
-          <% @round.players.each_with_index do |player, id| %>
-            <% next unless player.is_back %>
+          <% @round.players_back_on_submarine.each do |player, id| %>
             <div class="form-group row">    
               <label for="player_<%= id %>" class="col-sm-4 col-form-label">
                 <%= player %>
@@ -46,15 +44,21 @@
 
       <% unless @round_id == 3 %>
         <div class='score next-player'>
-        <legend>Who's the next player?</legend>
-        <div class="input-group mb-3">
-          <select class="custom-select" name="next_player">
-            <option selected>Select Player</option>
-            <% @round.players.each_with_index do |player, id| %>
-              <option value="<%= id %>"><%= player %></option>
-            <% end %>
-          </select>
-        </div>
+          <legend>Who's the next player?</legend>
+          <div class="input-group mb-3">
+            <select class="custom-select" name="next_player">
+              <option selected>Select Player</option>
+              <% if @round.all_back? %>
+                <% @round.players.each_with_index do |player, id| %>
+                  <option value="<%= id %>"><%= player %></option>
+                <% end %>
+              <% else %>
+                <% @round.drowned_players.each do |player, id| %>
+                  <option value="<%= id %>"><%= player %></option>
+                <% end %>
+              <% end %>
+            </select>
+          </div>
         </div>
       <% end %>
 
