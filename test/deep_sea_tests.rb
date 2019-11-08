@@ -298,4 +298,42 @@ class DeepSeaTest < Minitest::Test
     assert_includes last_response.body, '<option value="0">Archer'
     assert_includes last_response.body, "<button type='submit'"
   end
+
+  def test_save_info_end_of_round_players_back
+    create_game(players)
+    end_round_when_players_back(1)
+
+    post '/round/1/save', { 'next_player' => '1', 'player_0' => '3',
+                            'player_1'    => '2', 'player_2' => '1' }
+
+    assert_equal 302, last_response.status
+    assert_equal 3, game.players[0].score
+    assert_equal 2, game.players[1].score
+    assert_equal 1, game.players[2].score
+    
+    3.times do |id|
+      assert_equal false, game.players[id].going_up
+      assert_equal false, game.players[id].is_back
+      assert_equal 0,     game.players[id].treasures
+    end
+
+    assert_equal game.players[1], game.round.next_player
+  end
+
+  def test_save_info_end_of_round_no_oxygen
+    create_game(players)
+    end_round_when_no_oxygen(1)
+
+    post '/round/1/save', { 'next_player' => '2' }
+    assert_equal 302, last_response.status
+
+    3.times do |id|
+      assert_equal false, game.players[id].going_up
+      assert_equal false, game.players[id].is_back
+      assert_equal 0,     game.players[id].treasures
+      assert_equal 0,     game.players[id].score
+    end
+
+    assert_equal game.players[2], game.round.next_player
+  end
 end

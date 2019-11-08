@@ -18,26 +18,26 @@ end
 
 def end_round_when_players_back(round_id)
   3.times do |id|
-    post "/round/#{round_id}/player/#{id}",
-         { 'keep_diving' => 'true',  'treasure' => 'add' }
-    post "/round/#{round_id}/player/#{id}",
-         { 'keep_diving' => 'false', 'treasure' => 'add' }
-    post "/round/#{round_id}/player/#{id}",
-         { 'back'        => 'true',  'treasure' => 'none' }
+    post "/round/#{round_id}/player/#{id}", { 'keep_diving' => 'true', 
+                                              'treasure'    => 'add' }
+    post "/round/#{round_id}/player/#{id}", { 'keep_diving' => 'false',
+                                              'treasure'    => 'add' }
+    post "/round/#{round_id}/player/#{id}", { 'back'        => 'true',
+                                              'treasure'    => 'none' }
   end
 end
 
 def end_round_when_no_oxygen(round_id)
   4.times do
-    post "/round/#{round_id}/player/0",
-         { 'keep_diving' => 'true',  'treasure' => 'add' }
+    post "/round/#{round_id}/player/0", { 'keep_diving' => 'true', 
+                                          'treasure'    => 'add' }
   end
 
   7.times do
-    post "/round/#{round_id}/player/2",
-         { 'keep_diving' => 'true',  'treasure' => 'none' }
+    post "/round/#{round_id}/player/2", { 'keep_diving' => 'true',
+                                          'treasure'    => 'none' }
   end
 
-  post "/round/#{round_id}/player/0",
-       { 'keep_diving' => 'true',  'treasure' => 'none' }
+  post "/round/#{round_id}/player/0", { 'keep_diving' => 'true',
+                                        'treasure'    => 'none' }
 end

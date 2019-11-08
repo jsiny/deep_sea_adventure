@@ -1,7 +1,7 @@
 class Round
   MAX_OXYGEN = 25
 
-  attr_reader :players
+  attr_reader :players, :next_player
 
   def initialize(players, index)
     @remaining_oxygen = MAX_OXYGEN
