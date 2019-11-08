@@ -220,14 +220,23 @@ class DeepSeaTest < Minitest::Test
     refute_includes last_response.body, "Lana has reduced the oxygen by 1"
   end
 
-  def test_finish_round_players_back
+  def test_back_and_forth_browser_does_not_affect_oxygen
     create_game(players)
 
-    3.times do |id|
-      post "/round/1/player/#{id}", { 'keep_diving' => 'true',  'treasure' => 'add' }
-      post "/round/1/player/#{id}", { 'keep_diving' => 'false', 'treasure' => 'add' }
-      post "/round/1/player/#{id}", { 'back'        => 'true',  'treasure' => 'none' }
-    end
+    post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'add' }
+
+    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'none' }
+    get '/round/1/player/1'
+    assert_includes last_response.body, "aria-valuenow=1"
+    
+    get '/round/1/player/0'
+    get '/round/1/player/1'
+    assert_includes last_response.body, "aria-valuenow=1"
+  end
+
+  def test_finish_round_players_back
+    create_game(players)
+    end_round_when_players_back(1)
 
     assert_includes last_response.headers['Location'], '/round/1/score'
   end
@@ -254,17 +263,39 @@ class DeepSeaTest < Minitest::Test
     assert_includes last_response.headers['Location'], '/round/1/score'
   end
 
-  def test_back_and_forth_browser_does_not_affect_oxygen
+  def test_access_round_score_players_all_back
     create_game(players)
-
-    post '/round/1/player/1', { 'keep_diving' => 'true', 'treasure' => 'add' }
-
-    post '/round/1/player/0', { 'keep_diving' => 'true', 'treasure' => 'none' }
-    get '/round/1/player/1'
-    assert_includes last_response.body, "aria-valuenow=1"
+    end_round_when_players_back(1)
     
-    get '/round/1/player/0'
-    get '/round/1/player/1'
-    assert_includes last_response.body, "aria-valuenow=1"
+    assert_equal 302, last_response.status
+    assert_includes last_response.headers['Location'], '/round/1/score'
+
+    get last_response.headers['Location']
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "Round 1 - Score"
+    refute_includes last_response.body, "Divers who drowned"
+    assert_includes last_response.body, "Add score for the divers"
+    assert_includes last_response.body, '<label for="player-2"'
+    assert_includes last_response.body, '<option value="0">Archer'
+    assert_includes last_response.body, "<button type='submit'"
+  end
+
+  def test_access_round_score_no_more_oxygen
+    create_game(players)
+    end_round_when_no_oxygen(1)
+
+    assert_equal 302, last_response.status
+    assert_includes last_response.headers['Location'], '/round/1/score'
+
+    get last_response.headers['Location']
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "Round 1 - Score"
+    assert_includes last_response.body, "Divers who drowned"
+    assert_includes last_response.body, "<td>Archer</td>"
+    assert_includes last_response.body, "<td>0 points</td>"
+    refute_includes last_response.body, "Add score for the divers"
+    refute_includes last_response.body, '<label for="player-2"'
+    assert_includes last_response.body, '<option value="0">Archer'
+    assert_includes last_response.body, "<button type='submit'"
   end
 end
