@@ -64,6 +64,7 @@ def start_next_round(params)
   @players.each(&:reset)
   next_player = params[:next_player].to_i
   session[:game].next_round(next_player)
+  redirect "/round/#{@round_id + 1}/player/#{next_player}"
 end
 
 # Homepage
@@ -112,5 +113,4 @@ end
 post '/round/:round_id/save' do
   save_round_info(params)
   start_next_round(params)
-  redirect '/'
 end

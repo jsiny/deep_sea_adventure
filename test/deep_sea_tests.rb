@@ -101,6 +101,7 @@ class DeepSeaTest < Minitest::Test
     assert_includes last_response.body, 
                     "There are <strong>25</strong> slots of oxygen left"
     assert_includes last_response.body, 'aria-valuenow=0'
+    assert_equal 2, game.remaining_rounds
   end
 
   def test_send_first_player_turn
@@ -114,6 +115,7 @@ class DeepSeaTest < Minitest::Test
     get last_response.headers['Location']
     assert_equal 200, last_response.status
     assert_includes last_response.body, "It's Lana's turn"
+    assert_equal 2, game.remaining_rounds
   end
 
   def test_player_takes_no_treasure
@@ -240,6 +242,7 @@ class DeepSeaTest < Minitest::Test
     end_round_when_players_back(1)
 
     assert_includes last_response.headers['Location'], '/round/1/score'
+    assert_equal 2, game.remaining_rounds
   end
 
   def test_finish_round_no_more_oxygen
@@ -303,6 +306,8 @@ class DeepSeaTest < Minitest::Test
                             'player_1'    => '2', 'player_2' => '1' }
 
     assert_equal 302, last_response.status
+    assert_includes last_response.headers['Location'], '/round/2/player/1'
+
     assert_equal 3, game.players[0].score
     assert_equal 2, game.players[1].score
     assert_equal 1, game.players[2].score
@@ -314,6 +319,7 @@ class DeepSeaTest < Minitest::Test
     end
 
     assert_equal game.players[1], game.round.next_player
+    assert_equal 1, game.remaining_rounds
   end
 
   def test_save_info_end_of_round_no_oxygen
@@ -322,6 +328,7 @@ class DeepSeaTest < Minitest::Test
 
     post '/round/1/save', { 'next_player' => '2' }
     assert_equal 302, last_response.status
+    assert_includes last_response.headers['Location'], '/round/2/player/2'
 
     3.times do |id|
       assert_equal false, game.players[id].going_up
@@ -331,6 +338,7 @@ class DeepSeaTest < Minitest::Test
     end
 
     assert_equal game.players[2], game.round.next_player
+    assert_equal 1, game.remaining_rounds
   end
 
   def test_save_info_oxygen_left_some_players_back
@@ -343,6 +351,8 @@ class DeepSeaTest < Minitest::Test
     post '/round/1/save', { 'next_player' => '2', 'player_1' => '4' }
 
     assert_equal 302, last_response.status
+    assert_includes last_response.headers['Location'], '/round/2/player/2'
+
     assert_equal 0, game.players[0].score
     assert_equal 4, game.players[1].score
     assert_equal 0, game.players[2].score

@@ -1,7 +1,7 @@
 class Game
   ROUNDS_NUMBER = 3
 
-  attr_accessor :players, :round
+  attr_accessor :players, :round, :remaining_rounds
 
   def initialize
     @players = []
