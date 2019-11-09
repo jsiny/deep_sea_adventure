@@ -10,8 +10,6 @@ require 'rack/test'
 require_relative '../deep_sea.rb'
 require_relative 'test_helper.rb'
 
-require 'pry'
-
 class DeepSeaTest < Minitest::Test
   include Rack::Test::Methods
 

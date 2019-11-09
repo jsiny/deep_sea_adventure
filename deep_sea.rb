@@ -58,7 +58,6 @@ def save_round_info(params)
     points = params[player_id].to_i
     player.new_score(points)
   end
-  # @players.each(&:reset)
 end
 
 def start_next_round(params)
@@ -119,6 +118,7 @@ post '/round/:round_id/save' do
   redirect '/end'
 end
 
+# Access scoreboard and winner announcement
 get '/end' do
   message("The 3 rounds are over!")
   session[:game].compute_scores
