@@ -66,7 +66,7 @@ bottom of the page 🌈
 
 ## Tech
 
-Built with Ruby and the framework [Sinatra](http://sinatrarb.com/).
+Built with **Ruby**, the framework **[Sinatra](http://sinatrarb.com/)** and **Bootstrap**.
 This project uses sessions and cookies storage in order to play a game without
 logging in users. 
 
