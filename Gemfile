@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+gem 'coveralls', require: false
 gem "erubis"
 gem 'rack-test'
 gem "rubocop"
