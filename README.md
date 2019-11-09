@@ -1,4 +1,7 @@
 ![Title](screenshots/title.png)
+<p align="center">
+  <img src="/screenshots/title.png">
+</p>
 
 # Deep Sea Adventures - Scoring App
 
