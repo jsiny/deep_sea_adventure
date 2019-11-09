@@ -1,12 +1,13 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 gem 'coveralls', require: false
-gem "erubis"
+gem 'erubis'
 gem 'rack-test'
-gem "rubocop"
-gem "rubocop-performance"
+gem 'rake'
+gem 'rubocop'
+gem 'rubocop-performance'
 gem 'simplecov', require: false, group: :test
-gem "sinatra"
-gem "sinatra-contrib"
+gem 'sinatra'
+gem 'sinatra-contrib'
 
-ruby "2.6.5"
+ruby '2.6.5'

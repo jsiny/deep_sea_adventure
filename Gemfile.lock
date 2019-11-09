@@ -27,6 +27,7 @@ GEM
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rainbow (3.0.0)
+    rake (13.0.0)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     rubocop (0.76.0)
@@ -70,6 +71,7 @@ DEPENDENCIES
   coveralls
   erubis
   rack-test
+  rake
   rubocop
   rubocop-performance
   simplecov
