@@ -4,6 +4,7 @@ gem 'coveralls', require: false
 gem 'erubis'
 gem 'rack-test'
 gem 'rake'
+gem 'rest-client', '>= 1.8.0'
 gem 'rubocop'
 gem 'rubocop-performance'
 gem 'simplecov', require: false, group: :test
