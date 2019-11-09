@@ -1,7 +1,10 @@
-desc 'Run project tests'
-task :test do
-  ruby 'test/deep_sea_tests.rb'
-end
+require 'rake/testtask'
 
 desc 'Default task (tests)'
 task :default => [:test]
+
+Rake::TestTask.new do |t|
+  t.libs << "test"
+  t.test_files = FileList['test/*_tests.rb']
+  t.verbose = true
+end
