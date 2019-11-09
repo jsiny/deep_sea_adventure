@@ -1,4 +1,3 @@
-![Title](screenshots/title.png)
 <p align="center">
   <img src="/screenshots/title.png">
 </p>
@@ -37,11 +36,15 @@ handy!
 
 ### 1. Create New Game
 
-![Create New Game](screenshots/new_game.png)
+<p align="center">
+  <img src="/screenshots/new_game.png">
+</p>
 
 ### 2. Record action for each player
 
-![Player Turn](screenshots/player_turn.png)
+<p align="center">
+  <img src="/screenshots/player_turn.png">
+</p>
 
 A player can choose to keep diving or go back to the surface. She can also
 add a treasure, leave one of hers, or do nothing.
@@ -51,11 +54,15 @@ bottom of the page 🌈
 
 ### 3. At the end of the round, record the score
 
-![End of the Round](screenshots/score.png)
+<p align="center">
+  <img src="/screenshots/score.png">
+</p>
 
 ### 4. After 3 rounds, crown a winner!
 
-![End of the Game](screenshots/end.png)
+<p align="center">
+  <img src="/screenshots/end.png">
+</p>
 
 ## Tech
 
