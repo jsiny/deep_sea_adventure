@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'coveralls', require: false
 gem 'erubis'
 gem 'minitest'
+gem 'minitest-reporters'
 gem 'rack-test'
 gem 'rake'
 gem 'rest-client', '>= 1.8.0'
