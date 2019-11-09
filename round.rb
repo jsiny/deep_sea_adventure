@@ -52,17 +52,15 @@ class Round
     @players.any?(&:is_back)
   end
 
-  def drowned_players    
+  def drowned_players
     @players.each_with_object({}).with_index do |(player, hash), id|
-      next if player.is_back
-      hash[player] = id
+      hash[player] = id unless player.is_back
     end
   end
 
   def players_back_on_submarine
     @players.each_with_object({}).with_index do |(player, hash), id|
-      next unless player.is_back
-      hash[player] = id
+      hash[player] = id if player.is_back
     end
   end
 end

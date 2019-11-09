@@ -28,10 +28,11 @@ class Game
   private
 
   def compute_scoreboard
-    @players.each_with_object({}) do |player, hash|
+    scores = @players.each_with_object({}) do |player, hash|
       hash[player] = player.score
     end
-      .sort_by { |player, score| -score }
+
+    scores.sort_by { |_, score| -score }
   end
 
   def compute_winner

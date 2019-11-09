@@ -54,6 +54,7 @@ end
 def save_round_info(params)
   @players.each_with_index do |player, id|
     next unless player.is_back
+
     player_id = "player_#{id}".to_sym
     points = params[player_id].to_i
     player.new_score(points)
