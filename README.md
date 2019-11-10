@@ -70,18 +70,37 @@ Built with **Ruby**, the framework **[Sinatra](http://sinatrarb.com/)** and **Bo
 This project uses sessions and cookies storage in order to play a game without
 logging in users. 
 
-## Tests
+## Setting it up on your own machine
 
-Run one of the following commands to run the test suite:
+*Note: You'll need to have `ruby` version `2.6.5` installed on your computer.*
 
-```ruby
-rake
-rake default
+Clone the repository:
+
+```unix
+git clone https://github.com/jsiny/deep_sea_adventure.git
+```
+
+Install the required gems:
+
+```unix
+bundle install
+```
+
+Run the app locally (on `localhost:4567`) with the following command:
+
+```unix
+ruby deep_sea.rb
+```
+
+Run the tests suite:
+
+```unix
 rake test
 ```
 
 ## Possible Future Improvements
 
+* Add some client-side validations and error messages
 * Allow users to edit a previously submitted action
 * Allow users to customize the number of rounds for a game
 * Allow users to log in and save their games for future references
