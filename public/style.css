@@ -73,3 +73,20 @@ table, td, th {
 select {
   margin-top: 24px;
 }
+
+/* Footer */
+
+footer {
+  /* text-align: right; */
+  font-style: italic;
+  color: grey;
+  /* margin-right: 30px; */
+}
+
+footer a {
+  color: grey;
+}
+
+hr {
+  margin: 25px auto 15px;
+}
