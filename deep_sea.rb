@@ -3,10 +3,9 @@ require 'sinatra/reloader' if development?
 require 'sinatra/content_for'
 require 'tilt/erubis'
 require 'securerandom'
+require 'require_all'
 
-require_relative 'game'
-require_relative 'player'
-require_relative 'round'
+require_all 'lib'
 
 configure do
   enable :sessions
