@@ -1,9 +1,11 @@
 require 'sinatra'
 require 'sinatra/content_for'
 require 'sinatra/reloader' if development?
-require 'tilt/erubis'
-require 'securerandom'
+
+require 'pg'
 require 'require_all'
+require 'securerandom'
+require 'tilt/erubis'
 
 require_all 'lib'
 
