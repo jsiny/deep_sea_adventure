@@ -16,7 +16,7 @@ configure do
 end
 
 before do
-  @storage = SessionPersistence.new(session)
+  @storage   = SessionPersistence.new(session)
   @game      = @storage.game
 end
 
