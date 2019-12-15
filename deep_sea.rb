@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/content_for'
+require 'sinatra/reloader' if development?
 require 'tilt/erubis'
 require 'securerandom'
 require 'require_all'
@@ -10,13 +11,6 @@ configure do
   enable :sessions
   set :session_secret, ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
   set :erb,            escape_html: true
-end
-
-configure(:development) do
-  require 'sinatra/reloader'
-  also_reload 'lib/game.rb'
-  also_reload 'lib/round.rb'
-  # Dir[File.join(__dir__, 'lib', '*.rb')].each { |file| also_reload file }
 end
 
 before '/round/:round_id/*' do
