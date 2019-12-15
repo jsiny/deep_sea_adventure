@@ -7,6 +7,7 @@ gem 'minitest-reporters'
 gem 'rack-test'
 gem 'rake'
 gem 'rest-client', '>= 1.8.0'
+gem 'require_all'
 gem 'rubocop'
 gem 'rubocop-performance'
 gem 'simplecov', require: false, group: :test
