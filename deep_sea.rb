@@ -17,17 +17,18 @@ end
 
 before do
   @storage = SessionPersistence.new(session)
+  @game      = @storage.game
 end
 
 before '/round/:round_id/*' do
   @round_id  = params[:round_id].to_i
-  @round     = @storage.game.round
-  @players   = @storage.game.players
+  @round     = @game.round
+  @players   = @game.players
 end
 
 before '/round/:round_id/player/:player_id' do
   @player_id = params[:player_id].to_i
-  @player    = @storage.game.players[@player_id]
+  @player    = @game.players[@player_id]
 end
 
 helpers do
@@ -40,9 +41,9 @@ def add_players(params)
   players = params.values.reject(&:empty?).map(&:capitalize)
 
   if (3..6).cover?(players.size)
-    players.each { |name| @storage.game.add_player(name) }
+    players.each { |name| @game.add_player(name) }
     message("The following players will dive: #{players.join(', ')}")
-    @storage.game.next_round
+    @game.next_round
     redirect '/round/1/player/0'
   else
     message('You need 3 to 6 divers', 'danger')
@@ -69,7 +70,7 @@ end
 def start_next_round(params)
   @players.each(&:reset)
   next_player = params[:next_player].to_i
-  @storage.game.next_round(next_player)
+  @game.next_round(next_player)
   next_round_id = @round_id + 1
   message("Round #{next_round_id} has started!")
   redirect "/round/#{next_round_id}/player/#{next_player}"
@@ -127,6 +128,6 @@ end
 # Access scoreboard and winner announcement
 get '/end' do
   message("The 3 rounds are over!")
-  @storage.game.compute_scores
+  @game.compute_scores
   erb :end
 end
