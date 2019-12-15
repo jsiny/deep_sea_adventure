@@ -7,9 +7,15 @@ class SessionPersistence
   end
 
   def all_players
+    @game.players
   end
 
   def round
+    @game.round
+  end
+
+  def find_player(player_id)
+    all_players[player_id]
   end
 
   def add_new_player

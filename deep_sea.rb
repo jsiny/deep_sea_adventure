@@ -22,13 +22,13 @@ end
 
 before '/round/:round_id/*' do
   @round_id  = params[:round_id].to_i
-  @round     = @game.round
-  @players   = @game.players
+  @round     = @storage.round
+  @players   = @storage.all_players
 end
 
 before '/round/:round_id/player/:player_id' do
   @player_id = params[:player_id].to_i
-  @player    = @game.players[@player_id]
+  @player    = @storage.find_player(@player_id)
 end
 
 helpers do
