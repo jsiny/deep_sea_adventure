@@ -18,13 +18,19 @@ class SessionPersistence
     all_players[player_id]
   end
 
-  def add_new_player
+  def add_players(names)
+    names.each { |name| add_player(name) }
+  end
+
+  def add_player(name)
+    @game.players << Player.new(name)
   end
 
   def find_round(round_id)
   end
 
-  def reduce_oxygen
+  def reduce_oxygen(player)
+
   end
 
   def save_round_info
@@ -33,7 +39,9 @@ class SessionPersistence
   def new_game
   end
 
-  def new_round
+  def new_round(next_player_id)
+    @game.players.each(&:reset)
+    @game.next_round(next_player_id)
   end
 
   def save_player_info

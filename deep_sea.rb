@@ -41,7 +41,7 @@ def add_players(params)
   players = params.values.reject(&:empty?).map(&:capitalize)
 
   if (3..6).cover?(players.size)
-    players.each { |name| @game.add_player(name) }
+    @storage.add_players(players)
     message("The following players will dive: #{players.join(', ')}")
     @game.next_round
     redirect '/round/1/player/0'
@@ -68,9 +68,8 @@ def save_round_info(params)
 end
 
 def start_next_round(params)
-  @players.each(&:reset)
   next_player = params[:next_player].to_i
-  @game.next_round(next_player)
+  @storage.new_round(next_player)
   next_round_id = @round_id + 1
   message("Round #{next_round_id} has started!")
   redirect "/round/#{next_round_id}/player/#{next_player}"
