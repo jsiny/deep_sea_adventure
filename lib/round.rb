@@ -1,6 +1,7 @@
 class Round
   MAX_OXYGEN = 25
 
+  attr_accessor :remaining_oxygen
   attr_reader :players, :next_player
 
   def initialize(players, index)
@@ -23,9 +24,9 @@ class Round
     ((consumed_oxygen.to_f / MAX_OXYGEN) * 100).to_i
   end
 
-  def reduce_oxygen?(treasures)
-    @remaining_oxygen -= treasures unless treasures.zero?
-  end
+  # def reduce_oxygen?(treasures)
+  #   @remaining_oxygen -= treasures unless treasures.zero?
+  # end
 
   # Find next player during POST request (player turn)
   def next_id(current_player_id)

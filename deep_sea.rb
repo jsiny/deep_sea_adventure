@@ -17,7 +17,6 @@ end
 
 before do
   @storage   = SessionPersistence.new(session)
-  @game      = @storage.game
 end
 
 before '/round/:round_id/*' do
@@ -43,7 +42,7 @@ def add_players(params)
   if (3..6).cover?(players.size)
     @storage.add_players(players)
     message("The following players will dive: #{players.join(', ')}")
-    @game.next_round
+    @storage.new_round
     redirect '/round/1/player/0'
   else
     message('You need 3 to 6 divers', 'danger')
@@ -54,7 +53,7 @@ end
 def reduce_oxygen(player)
   treasures = player.treasures
   alert = "#{player} has reduced the oxygen by #{treasures}"
-  message(alert, 'warning') if @round.reduce_oxygen?(treasures)
+  message(alert, 'warning') if @storage.reduce_oxygen?(treasures)
 end
 
 def save_round_info(params)
@@ -63,7 +62,7 @@ def save_round_info(params)
 
     player_id = "player_#{id}".to_sym
     points = params[player_id].to_i
-    player.new_score(points)
+    @storage.new_player_score(id, points)
   end
 end
 
@@ -104,7 +103,7 @@ post '/round/:round_id/player/:player_id' do
   back        = params[:back]     # true / false (str)
   treasure    = params[:treasure] # add, remove, none
 
-  @player.save_info(keep_diving, back, treasure)
+  @storage.save_player_info(@player_id, keep_diving, back, treasure)
   redirect "/round/#{@round_id}/score" if @round.over?
 
   next_player = @round.next_id(@player_id)
@@ -127,6 +126,6 @@ end
 # Access scoreboard and winner announcement
 get '/end' do
   message("The 3 rounds are over!")
-  @game.compute_scores
+  @storage.compute_and_save_score
   erb :end
 end
