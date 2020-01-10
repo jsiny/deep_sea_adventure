@@ -30,7 +30,6 @@ class SessionPersistence
     find_player(player_id).score = points
   end
 
-
   def new_round(next_player_id = 0)
     all_players.each(&:reset)
     @game.next_round(next_player_id)
